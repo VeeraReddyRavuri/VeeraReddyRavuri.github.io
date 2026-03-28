@@ -1,0 +1,162 @@
+[
+  {
+    "id": "p1",
+    "title": "Linux & Python Reliability Toolkit",
+    "phase": 1,
+    "phaseLabel": "Phase 1 — Foundation",
+    "status": "live",
+    "month": "Month 1",
+    "whatIProved": "I think like an operator, not someone who follows tutorials. Linux is asked in every DevOps interview.",
+    "description": "A Python-based system monitor that detects failed systemd services, parses journalctl logs for errors, auto-restarts failing services, and fires Slack/email alerts when thresholds are breached. Wrapped as a systemd service with structured JSON logging.",
+    "highlights": [
+      "Structured JSON logging with the Python logging module",
+      "Webhook alerting on threshold breach",
+      "Systemd integration with Restart=on-failure",
+      "3 documented incident reports with root cause analysis"
+    ],
+    "stack": ["Python", "Linux", "systemd", "cron", "psutil", "bash"],
+    "github": "https://github.com/VeeraReddyRavuri/linux-reliability-toolkit",
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p2",
+    "title": "Bug Tracker — Containerized Stack",
+    "phase": 1,
+    "phaseLabel": "Phase 1 — Foundation",
+    "status": "live",
+    "month": "Month 2",
+    "whatIProved": "I understand how containers communicate with each other — asked in every DevOps and cloud interview without exception.",
+    "description": "A FastAPI bug/incident tracker containerized with Docker and orchestrated via Docker Compose. Multi-stage builds, custom bridge networking, Nginx reverse proxy, non-root user execution, resource limits, graceful shutdown handling, and blue-green scaling with docker-compose scale.",
+    "highlights": [
+      "Multi-stage build reduced image size below 150MB",
+      "Custom bridge network with DNS-based service discovery",
+      "Nginx reverse proxy with upstream load balancing",
+      "4 documented failure scenarios with debugging traces"
+    ],
+    "stack": ["Docker", "Docker Compose", "FastAPI", "PostgreSQL", "Nginx", "Python"],
+    "github": "https://github.com/VeeraReddyRavuri/bug-tracker-containerized-stack",
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p3",
+    "title": "AWS Infrastructure Provisioner",
+    "phase": 1,
+    "phaseLabel": "Phase 1 — Foundation",
+    "status": "live",
+    "month": "Month 3",
+    "whatIProved": "I can provision real cloud infrastructure from code and configure it automatically — the biggest skill gap between juniors and mid-level DevOps.",
+    "description": "End-to-end AWS infrastructure provisioned via Terraform: VPC with public/private subnets, NAT Gateway, S3 remote state with DynamoDB locking, least-privilege IAM, bastion host. Configured via Ansible with role-based playbooks, idempotency verified on second run, and CloudWatch log shipping.",
+    "highlights": [
+      "S3 remote state backend + DynamoDB state locking",
+      "Least-privilege IAM role (S3 read + CloudWatch write only)",
+      "Ansible roles verified idempotent on second run",
+      "Terraform drift detection documented as incident report"
+    ],
+    "stack": ["Terraform", "Ansible", "AWS", "EC2", "VPC", "IAM", "S3", "CloudWatch"],
+    "github": "https://github.com/VeeraReddyRavuri/aws-production-infra-blueprint",
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p4",
+    "title": "Secure CI/CD Pipeline",
+    "phase": 1,
+    "phaseLabel": "Phase 1 — Foundation",
+    "status": "coming-soon",
+    "month": "Month 4",
+    "whatIProved": "I can automate deployment from code commit to live server, with security gates and zero-downtime rollout.",
+    "description": "GitHub Actions pipeline: lint → test → build → Trivy scan → push to ECR → deploy to EC2 → ALB health check → auto-rollback. Blue/green deployment via ALB target group switching. Pipeline blocks on CRITICAL CVEs.",
+    "highlights": [
+      "Trivy blocks pipeline on CRITICAL CVEs",
+      "Auto-rollback on health check failure",
+      "Blue/green via ALB target group swap",
+      "Zero-downtime deployment verified end-to-end"
+    ],
+    "stack": ["GitHub Actions", "Docker", "AWS ECR", "ALB", "Trivy", "Ansible", "CloudWatch"],
+    "github": null,
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p5",
+    "title": "Kubernetes + War Room Stack",
+    "phase": 2,
+    "phaseLabel": "Phase 2 — Orchestration & Reliability",
+    "status": "coming-soon",
+    "month": "Months 5–6",
+    "whatIProved": "Operational maturity — the ability to walk through a real incident from symptoms to prevention. This separates 8 LPA candidates from 12 LPA candidates.",
+    "description": "Full Kubernetes deployment of the Bug Tracker: Deployment, Service, Ingress, HPA, PDB, NetworkPolicy, PersistentVolumeClaim, RBAC. Prometheus + Grafana + AlertManager via Helm. 4 chaos scenarios executed with RED/USE metric analysis and structured incident reports.",
+    "highlights": [
+      "4 chaos scenarios: pod crash, CPU spike, network partition, node drain",
+      "HPA targeting 60% CPU, min 1 / max 5 pods",
+      "NetworkPolicy restricting API-to-DB only",
+      "Structured incident reports: Hypothesis → Symptoms → Root Cause → Prevention"
+    ],
+    "stack": ["Kubernetes", "Helm", "Prometheus", "Grafana", "AlertManager", "HPA", "RBAC"],
+    "github": null,
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p6",
+    "title": "MLOps Production Pipeline",
+    "phase": 3,
+    "phaseLabel": "Phase 3 — AI Infrastructure",
+    "status": "coming-soon",
+    "month": "Month 7",
+    "whatIProved": "I can deploy and manage an ML model like a production service — with versioning, monitoring, rollback, and cost awareness.",
+    "description": "FastAPI serving a Hugging Face sentiment model with P99 latency monitoring, blue/green rollout in Kubernetes, automatic rollback on latency spike, model versioning via S3, and cost estimation per instance type.",
+    "highlights": [
+      "Model artifacts versioned in S3, loaded on startup",
+      "P99 latency exposed as Prometheus histogram",
+      "Auto-rollback triggers if P99 exceeds 3x baseline",
+      "Cost estimation documented per request volume"
+    ],
+    "stack": ["Kubernetes", "FastAPI", "Hugging Face", "S3", "Prometheus", "GitHub Actions", "Docker"],
+    "github": null,
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p7",
+    "title": "LLM / RAG Infrastructure",
+    "phase": 3,
+    "phaseLabel": "Phase 3 — AI Infrastructure",
+    "status": "coming-soon",
+    "month": "Months 7–8",
+    "whatIProved": "I understand the business of AI — cost control, rate limiting, secret management — not just the hype.",
+    "description": "RAG pipeline: document chunking → embedding → ChromaDB → LLM query with source citation. Per-request cost tracking, Redis caching (cache hit eliminates LLM cost), rate limiting middleware (429 with retry-after), API key rotation without pod restart.",
+    "highlights": [
+      "Per-query cost tracked: input + output tokens × price",
+      "Redis cache eliminates LLM cost on repeated queries",
+      "Rate limiter returns clean 429 with retry-after header",
+      "API key rotation plan documented without downtime"
+    ],
+    "stack": ["FastAPI", "ChromaDB", "Redis", "OpenAI API", "Kubernetes", "S3", "Docker"],
+    "github": null,
+    "demo": null,
+    "architectureDiagram": null
+  },
+  {
+    "id": "p8",
+    "title": "AI-Augmented SRE Dashboard",
+    "phase": 3,
+    "phaseLabel": "Phase 3 — AI Infrastructure",
+    "status": "coming-soon",
+    "month": "Month 8",
+    "whatIProved": "I understand where AI helps and where it shouldn't be trusted. I design safe systems — which makes me sound senior even as a junior.",
+    "description": "AlertManager webhook receiver that fetches related logs, builds an LLM prompt, returns structured JSON root-cause analysis with a confidence score (HIGH/MEDIUM/LOW), and sends a Slack message with a 'Do NOT act without verification' warning. Human approval gate before any action.",
+    "highlights": [
+      "Confidence scoring: HIGH if matches known runbook, LOW if no context",
+      "Every AI output logged to S3 as immutable audit trail",
+      "Human approval gate — nothing automated without explicit confirm",
+      "Limitations section in README: what the AI gets wrong"
+    ],
+    "stack": ["FastAPI", "AlertManager", "Prometheus", "OpenAI API", "Slack API", "S3", "Grafana"],
+    "github": null,
+    "demo": null,
+    "architectureDiagram": null
+  }
+]
