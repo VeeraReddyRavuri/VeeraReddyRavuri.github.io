@@ -2307,3 +2307,49 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+/* ── MOBILE OVERFLOW FIXES ────────────────────────────────── */
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevent arch preview SVGs from overflowing cards */
+.arch-preview {
+  overflow: hidden;
+}
+
+.arch-preview svg {
+  min-width: unset;
+  width: 100%;
+}
+
+/* Prevent metric strips from overflowing on small screens */
+@media (max-width: 600px) {
+  .card-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .metric-divider {
+    display: none;
+  }
+
+  .hero-metrics {
+    flex-wrap: wrap;
+  }
+
+  .hero-metric-badge {
+    flex: 1;
+    min-width: 80px;
+  }
+
+  .quick-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .card-links-bar {
+    flex-wrap: wrap;
+  }
+}
