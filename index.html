@@ -1,332 +1,364 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Veera Reddy Ravuri — Cloud-Native DevOps Engineer. Building production-grade infrastructure: Linux, Docker, Terraform, AWS, Kubernetes, MLOps.">
-  <meta name="keywords" content="DevOps, Cloud-Native, Kubernetes, Terraform, SRE, AWS, Docker, Infrastructure, India, GitHub Copilot, AWS Solutions Architect, HashiCorp Terraform Associate">
+  <meta name="description"
+    content="Veera Reddy Ravuri — Cloud-Native DevOps Engineer. Building production-grade infrastructure: Linux, Docker, Terraform, AWS, Kubernetes, MLOps.">
+  <meta name="keywords"
+    content="DevOps, Cloud-Native, Kubernetes, Terraform, SRE, AWS, Docker, Infrastructure, India, GitHub Copilot, AWS Solutions Architect, HashiCorp Terraform Associate">
   <meta name="author" content="Veera Reddy Ravuri">
   <meta property="og:title" content="Veera Reddy Ravuri — Cloud-Native DevOps Engineer">
-  <meta property="og:description" content="8-project portfolio proving end-to-end infrastructure competence. Real incident reports. Real metrics.">
+  <meta property="og:description"
+    content="8-project portfolio proving end-to-end infrastructure competence. Real incident reports. Real metrics.">
   <title>Veera Reddy Ravuri — Cloud-Native DevOps Engineer</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<!-- ── RESUME PREVIEW MODAL ──────────────────────────────────── -->
-<div class="modal-overlay" id="resume-modal" role="dialog" aria-modal="true">
-  <div class="modal-box" style="max-width:900px; height:90vh;">
-    <div class="modal-header">
-      <span class="modal-title">Resume — Veera Reddy Ravuri</span>
-      <div style="display:flex;gap:12px;align-items:center;">
-        <a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf" class="btn btn-primary" download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf" style="padding:8px 18px;font-size:11px;">↓ Download PDF</a>
-        <button class="modal-close" id="resume-modal-close" aria-label="Close">✕</button>
+  <!-- ── RESUME PREVIEW MODAL ──────────────────────────────────── -->
+  <div class="modal-overlay" id="resume-modal" role="dialog" aria-modal="true">
+    <div class="modal-box" style="max-width:900px; height:90vh;">
+      <div class="modal-header">
+        <span class="modal-title">Resume — Veera Reddy Ravuri</span>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf" class="btn btn-primary"
+            download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf" style="padding:8px 18px;font-size:11px;">↓ Download
+            PDF</a>
+          <button class="modal-close" id="resume-modal-close" aria-label="Close">✕</button>
+        </div>
       </div>
-    </div>
-    <div class="modal-body" style="padding:0; height:calc(100% - 64px);">
-      <iframe id="resume-iframe" src="" style="width:100%;height:100%;border:none;background:#1a2030;"></iframe>
-    </div>
-  </div>
-</div>
-
-<!-- ── ARCHITECTURE MODAL ────────────────────────────────────── -->
-<div class="modal-overlay" id="arch-modal" role="dialog" aria-modal="true">
-  <div class="modal-box">
-    <div class="modal-header">
-      <span class="modal-title" id="modal-title">Architecture Diagram</span>
-      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
-    </div>
-    <div class="modal-body">
-      <div class="modal-diagram" id="modal-diagram"></div>
-      <div class="modal-note" id="modal-note"></div>
-    </div>
-  </div>
-</div>
-
-<!-- ── NAV ───────────────────────────────────────────────────── -->
-<nav>
-  <a href="#hero" class="nav-logo">&lt;veera /&gt;</a>
-  <button class="hamburger" id="hamburger" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
-  <ul class="nav-links" id="nav-links">
-    <li><a href="#about">about</a></li>
-    <li><a href="#skills">skills</a></li>
-    <li><a href="#projects">projects</a></li>
-    <li><a href="#incidents">war stories</a></li>
-    <li><a href="blog.html">blog</a></li>
-    <li><a href="#contact">contact</a></li>
-    <li><a href="#" class="nav-resume-btn" onclick="openResume(event)">Resume ↓</a></li>
-  </ul>
-</nav>
-
-<!-- ── HERO ──────────────────────────────────────────────────── -->
-<section id="hero" class="section hero-compact">
-  <div class="container">
-    <div class="hero-inner">
-      <div class="hero-eyebrow">Cloud-Native DevOps Engineer · Open to Remote / Hybrid / On-site</div>
-      <h1 class="hero-name">Veera Reddy<br><span class="hi">Ravuri</span></h1>
-      <p class="hero-subtitle">Building infrastructure that doesn't fail —<br>and tooling to detect it when it does.</p>
-      <div class="hero-currently-building">
-        <div class="hcb-pulse"></div>
-        <strong>Currently building:</strong> P4 — Secure CI/CD Pipeline &nbsp;|&nbsp; Next: Kubernetes + War Room Stack
-      </div>
-      <div class="hero-ctas">
-        <a href="#projects" class="btn btn-primary">View Projects</a>
-        <a href="#incidents" class="btn btn-outline">Read War Stories</a>
-        <a href="#" class="btn btn-outline" onclick="openResume(event)">Resume ↓</a>
+      <div class="modal-body" style="padding:0; height:calc(100% - 64px);">
+        <iframe id="resume-iframe" src="" style="width:100%;height:100%;border:none;background:#1a2030;"></iframe>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ── KEY HIGHLIGHTS ────────────────────────────────────────── -->
-<section id="highlights" class="section" style="padding: 60px 0;">
-  <div class="container">
-    <div class="section-label">// at a glance</div>
-    <div class="highlights-grid">
-      <div class="highlight-card">
-        <div class="highlight-icon">🛠️</div>
-        <div class="highlight-text"><strong>3 production-style projects</strong> live — Linux monitoring, Docker networking, AWS infra</div>
+  <!-- ── ARCHITECTURE MODAL ────────────────────────────────────── -->
+  <div class="modal-overlay" id="arch-modal" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title" id="modal-title">Architecture Diagram</span>
+        <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
       </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">☁️</div>
-        <div class="highlight-text"><strong>Terraform IaC</strong> with S3 remote state + DynamoDB locking — 14 resources managed</div>
-      </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">🔥</div>
-        <div class="highlight-text"><strong>Documented war stories</strong> — every project broken on purpose, every break has a runbook</div>
-      </div>
-      <div class="highlight-card">
-        <div class="highlight-icon">🚀</div>
-        <div class="highlight-text"><strong>Hands-on</strong>: Docker networking, CI/CD, Kubernetes (in progress)</div>
+      <div class="modal-body">
+        <div class="modal-diagram" id="modal-diagram"></div>
+        <div class="modal-note" id="modal-note"></div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- ── ABOUT ─────────────────────────────────────────────────── -->
-<section id="about" class="section">
-  <div class="container">
-    <div class="section-label">// about</div>
-    <div class="about-grid">
-      <div class="about-text">
-        <div class="experience-timeline">
-          <div class="exp-item">
-            <div class="exp-dot exp-dot-past"></div>
-            <div class="exp-content">
-              <div class="exp-period">2024 – 2026</div>
-              <div class="exp-role">Software Engineer · Production QA</div>
-              <div class="exp-note">Tested production systems, wrote edge-case scenarios engineers hadn't considered. Learned how systems break under real conditions.</div>
+  <!-- ── NAV ───────────────────────────────────────────────────── -->
+  <nav>
+    <a href="#hero" class="nav-logo"><span class="logo-gears"><span class="logo-gear">⚙</span><span class="logo-gear logo-gear-2">⚙</span></span>&lt;veera /&gt;</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#incidents">war stories</a></li>
+      <li><a href="blog.html">blog</a></li>
+      <li><a href="#contact">contact</a></li>
+      <li><a href="#" class="nav-resume-btn" onclick="openResume(event)">Resume ↓</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ──────────────────────────────────────────────────── -->
+  <section id="hero" class="section hero-compact">
+    <div class="container">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">Cloud-Native DevOps Engineer · Open to Remote / Hybrid / On-site</div>
+        <h1 class="hero-name">Veera Reddy<br><span class="hi">Ravuri</span></h1>
+        <p class="hero-subtitle">Building infrastructure that doesn't fail —<br>and tooling to detect it when it does.
+        </p>
+        <div class="hero-currently-building">
+          <div class="hcb-pulse"></div>
+          <strong>Currently building:</strong> P4 — Secure CI/CD Pipeline &nbsp;|&nbsp; Next: Kubernetes + War Room
+          Stack
+        </div>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn btn-primary">View Projects</a>
+          <a href="#incidents" class="btn btn-outline">Read War Stories</a>
+          <a href="#" class="btn btn-outline" onclick="openResume(event)">Resume ↓</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── KEY HIGHLIGHTS ────────────────────────────────────────── -->
+  <section id="highlights" class="section" style="padding: 60px 0;">
+    <div class="container">
+      <div class="section-label">// at a glance</div>
+      <div class="highlights-grid">
+        <div class="highlight-card">
+          <div class="highlight-icon">🛠️</div>
+          <div class="highlight-text"><strong>3 production-style projects</strong> live — Linux monitoring, Docker
+            networking, AWS infra</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">☁️</div>
+          <div class="highlight-text"><strong>Terraform IaC</strong> with S3 remote state + DynamoDB locking — 14
+            resources managed</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">🔥</div>
+          <div class="highlight-text"><strong>Documented war stories</strong> — every project broken on purpose, every
+            break has a runbook</div>
+        </div>
+        <div class="highlight-card">
+          <div class="highlight-icon">🚀</div>
+          <div class="highlight-text"><strong>Hands-on</strong>: Docker networking, CI/CD, Kubernetes (in progress)
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── ABOUT ─────────────────────────────────────────────────── -->
+  <section id="about" class="section">
+    <div class="container">
+      <div class="section-label">// about</div>
+      <div class="about-grid">
+        <div class="about-text">
+          <div class="experience-timeline">
+            <div class="exp-item">
+              <div class="exp-dot exp-dot-past"></div>
+              <div class="exp-content">
+                <div class="exp-period">2024 – 2026</div>
+                <div class="exp-role">Software Engineer · Production QA</div>
+                <div class="exp-note">Tested production systems, wrote edge-case scenarios engineers hadn't considered.
+                  Learned how systems break under real conditions.</div>
+              </div>
+            </div>
+            <div class="exp-item">
+              <div class="exp-dot exp-dot-current"></div>
+              <div class="exp-content">
+                <div class="exp-period">2026 – Present</div>
+                <div class="exp-role">Cloud-Native DevOps Engineer <span class="exp-badge">transitioning</span></div>
+                <div class="exp-note">Building the infrastructure so systems don't fail — and the tooling to detect it
+                  when they do.</div>
+              </div>
             </div>
           </div>
-          <div class="exp-item">
-            <div class="exp-dot exp-dot-current"></div>
-            <div class="exp-content">
-              <div class="exp-period">2026 – Present</div>
-              <div class="exp-role">Cloud-Native DevOps Engineer <span class="exp-badge">transitioning</span></div>
-              <div class="exp-note">Building the infrastructure so systems don't fail — and the tooling to detect it when they do.</div>
+          <p>
+            In QA, I spent years understanding how systems fail — writing test cases for
+            edge cases engineers hadn't thought of. In DevOps, I get to design systems
+            that <strong>don't fail in the first place</strong>. And when they do,
+            I'm the one who built the tooling to detect and fix it.
+            <span class="hi">I already think in failure modes. I'm just moving upstream.</span>
+          </p>
+          <p>
+            I'm building an 8-project portfolio proving end-to-end infrastructure competence —
+            from Linux system reliability and container orchestration, through
+            Terraform-provisioned AWS infrastructure and secure CI/CD pipelines,
+            to Kubernetes and MLOps. <strong>Every project is broken on purpose.
+              Every break has an incident report.</strong>
+          </p>
+        </div>
+        <div class="about-stats">
+          <div class="stat-card">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Projects Live</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">8</div>
+            <div class="stat-label">Total Planned</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2yr</div>
+            <div class="stat-label">Production QA</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">IaC</div>
+            <div class="stat-label">Terraform + Ansible</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ────────────────────────────────────────────────── -->
+  <section id="skills" class="section">
+    <div class="container">
+      <div class="section-label">// skills</div>
+      <div class="section-title">Technical Stack</div>
+      <div class="skills-grid">
+        <div>
+          <div class="skill-group-label">Infrastructure &amp; Cloud</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Linux</span><span class="skill-tag">Docker</span>
+            <span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span>
+            <span class="skill-tag">AWS EC2</span><span class="skill-tag">AWS VPC</span>
+            <span class="skill-tag">AWS IAM</span><span class="skill-tag">AWS S3</span>
+            <span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span>
+            <span class="skill-tag">Nginx</span><span class="skill-tag">systemd</span>
+            <span class="skill-tag">bash</span>
+          </div>
+        </div>
+        <div>
+          <div class="skill-group-label">Observability &amp; Pipelines</div>
+          <div class="skill-tags">
+            <span class="skill-tag">GitHub Actions</span><span class="skill-tag">Prometheus</span>
+            <span class="skill-tag">Grafana</span><span class="skill-tag">AlertManager</span>
+            <span class="skill-tag">CloudWatch</span><span class="skill-tag">Python</span>
+            <span class="skill-tag">FastAPI</span><span class="skill-tag">PostgreSQL</span>
+            <span class="skill-tag">Redis</span><span class="skill-tag">Trivy</span>
+          </div>
+        </div>
+      </div>
+      <!-- Certifications -->
+      <div class="certs-section">
+        <div class="skill-group-label" style="margin-top: 40px;">Certifications</div>
+        <div class="certs-grid">
+          <div class="cert-card">
+            <div class="cert-icon">🤖</div>
+            <div class="cert-info">
+              <div class="cert-name">GitHub Copilot</div>
+              <div class="cert-status cert-active">✓ Certified · Mar 2026</div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-icon">☁️</div>
+            <div class="cert-info">
+              <div class="cert-name">AWS Solutions Architect — Associate</div>
+              <div class="cert-status cert-planned">Planned · Q3 2026</div>
+            </div>
+          </div>
+          <div class="cert-card">
+            <div class="cert-icon">🔧</div>
+            <div class="cert-info">
+              <div class="cert-name">HashiCorp Terraform Associate</div>
+              <div class="cert-status cert-planned">Planned · Q4 2026</div>
             </div>
           </div>
         </div>
-        <p>
-          In QA, I spent years understanding how systems fail — writing test cases for
-          edge cases engineers hadn't thought of. In DevOps, I get to design systems
-          that <strong>don't fail in the first place</strong>. And when they do,
-          I'm the one who built the tooling to detect and fix it.
-          <span class="hi">I already think in failure modes. I'm just moving upstream.</span>
-        </p>
-        <p>
-          I'm building an 8-project portfolio proving end-to-end infrastructure competence —
-          from Linux system reliability and container orchestration, through
-          Terraform-provisioned AWS infrastructure and secure CI/CD pipelines,
-          to Kubernetes and MLOps. <strong>Every project is broken on purpose.
-          Every break has an incident report.</strong>
-        </p>
-      </div>
-      <div class="about-stats">
-        <div class="stat-card"><div class="stat-num">3</div><div class="stat-label">Projects Live</div></div>
-        <div class="stat-card"><div class="stat-num">8</div><div class="stat-label">Total Planned</div></div>
-        <div class="stat-card"><div class="stat-num">2yr</div><div class="stat-label">Production QA</div></div>
-        <div class="stat-card"><div class="stat-num">IaC</div><div class="stat-label">Terraform + Ansible</div></div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── SKILLS ────────────────────────────────────────────────── -->
-<section id="skills" class="section">
-  <div class="container">
-    <div class="section-label">// skills</div>
-    <div class="section-title">Technical Stack</div>
-    <div class="skills-grid">
-      <div>
-        <div class="skill-group-label">Infrastructure &amp; Cloud</div>
-        <div class="skill-tags">
-          <span class="skill-tag">Linux</span><span class="skill-tag">Docker</span>
-          <span class="skill-tag">Terraform</span><span class="skill-tag">Ansible</span>
-          <span class="skill-tag">AWS EC2</span><span class="skill-tag">AWS VPC</span>
-          <span class="skill-tag">AWS IAM</span><span class="skill-tag">AWS S3</span>
-          <span class="skill-tag">Kubernetes</span><span class="skill-tag">Helm</span>
-          <span class="skill-tag">Nginx</span><span class="skill-tag">systemd</span>
-          <span class="skill-tag">bash</span>
-        </div>
+  <!-- ── PROJECTS ──────────────────────────────────────────────── -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section-label">// projects</div>
+      <div class="section-title">Portfolio Pipeline</div>
+      <div id="projects-root"></div>
+    </div>
+  </section>
+
+  <!-- ── WAR STORIES ───────────────────────────────────────────── -->
+  <section id="incidents" class="section">
+    <div class="container">
+      <div class="section-label">// failure case studies</div>
+      <div class="section-title">War Stories</div>
+      <p class="incidents-intro">
+        Every project is broken on purpose. These are the incidents that mattered —
+        the ones where something <strong>behaved differently than expected</strong>,
+        where the debugging revealed something real about how the system actually works.
+      </p>
+      <div class="incident-cards" id="incidents-root"></div>
+    </div>
+  </section>
+
+  <!-- ── LATEST POSTS ──────────────────────────────────────── -->
+  <section id="latest-posts" class="section">
+    <div class="container">
+      <div class="section-label">// what I'm writing</div>
+      <div class="section-title">Latest Deep Dives</div>
+      <div class="currently-building">
+        <div class="pulse"></div>
+        Currently building: P4 — Secure CI/CD Pipeline
       </div>
-      <div>
-        <div class="skill-group-label">Observability &amp; Pipelines</div>
-        <div class="skill-tags">
-          <span class="skill-tag">GitHub Actions</span><span class="skill-tag">Prometheus</span>
-          <span class="skill-tag">Grafana</span><span class="skill-tag">AlertManager</span>
-          <span class="skill-tag">CloudWatch</span><span class="skill-tag">Python</span>
-          <span class="skill-tag">FastAPI</span><span class="skill-tag">PostgreSQL</span>
-          <span class="skill-tag">Redis</span><span class="skill-tag">Trivy</span>
-        </div>
+      <div class="posts-grid" id="posts-root"></div>
+      <div style="text-align: center; margin-top: 36px;">
+        <a href="blog.html" class="btn btn-outline">View All Posts →</a>
       </div>
     </div>
-    <!-- Certifications -->
-    <div class="certs-section">
-      <div class="skill-group-label" style="margin-top: 40px;">Certifications</div>
-      <div class="certs-grid">
-        <div class="cert-card">
-          <div class="cert-icon">🤖</div>
-          <div class="cert-info">
-            <div class="cert-name">GitHub Copilot</div>
-            <div class="cert-status cert-active">✓ Certified · Mar 2026</div>
+  </section>
+
+  <!-- ── CONTACT ───────────────────────────────────────────────── -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-label">// contact</div>
+      <div class="section-title">Open to Cloud / DevOps / SRE Roles</div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-avail">
+            <div class="avail-dot"></div>
+            Open to Remote / Hybrid / On-site · India
+          </div>
+          <p>
+            Looking for roles where <strong>infrastructure reliability actually matters</strong>.
+            If your team runs production systems that need to stay up — and you want someone
+            who thinks about why they won't — let's talk.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:veerareddy.ravuri01@gmail.com" class="c-link">
+              <span class="c-link-icon">✉</span> veerareddy.ravuri01@gmail.com
+            </a>
+            <a href="tel:+919908201599" class="c-link">
+              <span class="c-link-icon">✆</span> +91 9908201599
+            </a>
+            <a href="https://www.linkedin.com/in/veerareddyravuri/" class="c-link" target="_blank" rel="noopener">
+              <span class="c-link-icon">in</span> linkedin.com/in/veerareddyravuri
+            </a>
+            <a href="https://github.com/VeeraReddyRavuri" class="c-link" target="_blank" rel="noopener">
+              <span class="c-link-icon">⌥</span> github.com/VeeraReddyRavuri
+            </a>
+            <a href="#" class="c-link" onclick="openResume(event)">
+              <span class="c-link-icon">↓</span> View & Download Resume (PDF)
+            </a>
           </div>
         </div>
-        <div class="cert-card">
-          <div class="cert-icon">☁️</div>
-          <div class="cert-info">
-            <div class="cert-name">AWS Solutions Architect — Associate</div>
-            <div class="cert-status cert-planned">Planned · Q3 2026</div>
+        <form class="contact-form" action="https://formspree.io/f/xnjopdal" method="POST">
+          <div class="form-row">
+            <label>Name</label>
+            <input type="text" name="name" placeholder="Your name" required>
           </div>
-        </div>
-        <div class="cert-card">
-          <div class="cert-icon">🔧</div>
-          <div class="cert-info">
-            <div class="cert-name">HashiCorp Terraform Associate</div>
-            <div class="cert-status cert-planned">Planned · Q4 2026</div>
+          <div class="form-row">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="your@email.com" required>
           </div>
-        </div>
+          <div class="form-row">
+            <label>Role / Company</label>
+            <input type="text" name="role" placeholder="e.g. DevOps Engineer at Acme Corp">
+          </div>
+          <div class="form-row">
+            <label>Message</label>
+            <textarea name="message" placeholder="Tell me about the role and what you're building..."
+              required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message →</button>
+        </form>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ── PROJECTS ──────────────────────────────────────────────── -->
-<section id="projects" class="section">
-  <div class="container">
-    <div class="section-label">// projects</div>
-    <div class="section-title">Portfolio Pipeline</div>
-    <div id="projects-root"></div>
-  </div>
-</section>
-
-<!-- ── WAR STORIES ───────────────────────────────────────────── -->
-<section id="incidents" class="section">
-  <div class="container">
-    <div class="section-label">// failure case studies</div>
-    <div class="section-title">War Stories</div>
-    <p class="incidents-intro">
-      Every project is broken on purpose. These are the incidents that mattered —
-      the ones where something <strong>behaved differently than expected</strong>,
-      where the debugging revealed something real about how the system actually works.
-    </p>
-    <div class="incident-cards" id="incidents-root"></div>
-  </div>
-</section>
-
-<!-- ── LATEST POSTS ──────────────────────────────────────── -->
-<section id="latest-posts" class="section">
-  <div class="container">
-    <div class="section-label">// what I'm writing</div>
-    <div class="section-title">Latest Deep Dives</div>
-    <div class="currently-building">
-      <div class="pulse"></div>
-      Currently building: P4 — Secure CI/CD Pipeline
+  <!-- ── FOOTER ────────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-left">
+      © 2026 Veera Reddy Ravuri · HTML + CSS + JS · Auto-deployed via GitHub Actions
+      &nbsp;·&nbsp; <a href="https://github.com/VeeraReddyRavuri/VeeraReddyRavuri.github.io" class="footer-arch-link"
+        target="_blank" rel="noopener">View Portfolio Source ↗</a>
     </div>
-    <div class="posts-grid" id="posts-root"></div>
-    <div style="text-align: center; margin-top: 36px;">
-      <a href="blog.html" class="btn btn-outline">View All Posts →</a>
+    <div class="footer-right">
+      <div class="deploy-dot"></div>
+      Last build: <span id="build-date"></span>
     </div>
-  </div>
-</section>
+  </footer>
 
-<!-- ── CONTACT ───────────────────────────────────────────────── -->
-<section id="contact" class="section">
-  <div class="container">
-    <div class="section-label">// contact</div>
-    <div class="section-title">Open to Cloud / DevOps / SRE Roles</div>
-    <div class="contact-grid">
-      <div class="contact-info">
-        <div class="contact-avail">
-          <div class="avail-dot"></div>
-          Available for interviews · India · Open to Remote / Hybrid / On-site
-        </div>
-        <p>
-          Looking for roles where <strong>infrastructure reliability actually matters</strong>.
-          If your team runs production systems that need to stay up — and you want someone
-          who thinks about why they won't — let's talk.
-        </p>
-        <div class="contact-links">
-          <a href="mailto:veerareddy.ravuri01@gmail.com" class="c-link">
-            <span class="c-link-icon">✉</span> veerareddy.ravuri01@gmail.com
-          </a>
-          <a href="tel:+919908201599" class="c-link">
-            <span class="c-link-icon">✆</span> +91 9908201599
-          </a>
-          <a href="https://www.linkedin.com/in/veerareddyravuri/" class="c-link" target="_blank" rel="noopener">
-            <span class="c-link-icon">in</span> linkedin.com/in/veerareddyravuri
-          </a>
-          <a href="https://github.com/VeeraReddyRavuri" class="c-link" target="_blank" rel="noopener">
-            <span class="c-link-icon">⌥</span> github.com/VeeraReddyRavuri
-          </a>
-          <a href="#" class="c-link" onclick="openResume(event)">
-            <span class="c-link-icon">↓</span> View & Download Resume (PDF)
-          </a>
-        </div>
-      </div>
-      <form class="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-        <div class="form-row">
-          <label>Name</label>
-          <input type="text" name="name" placeholder="Your name" required>
-        </div>
-        <div class="form-row">
-          <label>Email</label>
-          <input type="email" name="email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-row">
-          <label>Role / Company</label>
-          <input type="text" name="role" placeholder="e.g. DevOps Engineer at Acme Corp">
-        </div>
-        <div class="form-row">
-          <label>Message</label>
-          <textarea name="message" placeholder="Tell me about the role and what you're building..." required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Send Message →</button>
-      </form>
-    </div>
-  </div>
-</section>
-
-<!-- ── FOOTER ────────────────────────────────────────────────── -->
-<footer>
-  <div class="footer-left">
-    © 2025 Veera Reddy Ravuri · HTML + CSS + JS · Auto-deployed via GitHub Actions
-    &nbsp;·&nbsp; <a href="https://github.com/VeeraReddyRavuri/VeeraReddyRavuri.github.io" class="footer-arch-link" target="_blank" rel="noopener">View Portfolio Source ↗</a>
-  </div>
-  <div class="footer-right">
-    <div class="deploy-dot"></div>
-    Last build: <span id="build-date"></span>
-  </div>
-</footer>
-
-<!-- ── SCRIPTS ──────────────────────────────────────────────── -->
-<script src="main.js"></script>
+  <!-- ── SCRIPTS ──────────────────────────────────────────────── -->
+  <script src="main.js"></script>
 </body>
+
 </html>

@@ -33,7 +33,7 @@ whoami  # Should be root or user with restart permissions
 systemctl list-units --state=failed
 
 # 5. Test webhook connectivity
-curl -s -o /dev/null -w "%{http_code}" https://hooks.slack.com/services/YOUR_WEBHOOK
+curl -s -o /dev/null -w "%{http_code}" $WEBHOOK_URL
 ```
 
 ## Mitigation Steps
