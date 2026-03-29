@@ -2309,13 +2309,10 @@ footer {
 }
 
 /* ── MOBILE OVERFLOW FIXES ────────────────────────────────── */
-html,
 body {
-  max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
-/* Prevent arch preview SVGs from overflowing cards */
 .arch-preview {
   overflow: hidden;
 }
@@ -2325,8 +2322,21 @@ body {
   width: 100%;
 }
 
-/* Prevent metric strips from overflowing on small screens */
+.pipeline-item {
+  min-width: 0;
+}
+
+.project-card {
+  min-width: 0;
+  width: 100%;
+}
+
 @media (max-width: 600px) {
+  .pipeline-item {
+    grid-template-columns: 24px 1fr;
+    gap: 0 12px;
+  }
+
   .card-metrics {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -2350,6 +2360,10 @@ body {
   }
 
   .card-links-bar {
+    flex-wrap: wrap;
+  }
+
+  .card-top {
     flex-wrap: wrap;
   }
 }
