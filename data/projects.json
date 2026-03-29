@@ -2,161 +2,429 @@
   {
     "id": "p1",
     "title": "Linux & Python Reliability Toolkit",
-    "phase": 1,
-    "phaseLabel": "Phase 1 — Foundation",
+    "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "live",
-    "month": "Month 1",
-    "whatIProved": "I think like an operator, not someone who follows tutorials. Linux is asked in every DevOps interview.",
-    "description": "A Python-based system monitor that detects failed systemd services, parses journalctl logs for errors, auto-restarts failing services, and fires Slack/email alerts when thresholds are breached. Wrapped as a systemd service with structured JSON logging.",
-    "highlights": [
-      "Structured JSON logging with the Python logging module",
-      "Webhook alerting on threshold breach",
-      "Systemd integration with Restart=on-failure",
-      "3 documented incident reports with root cause analysis"
+    "whatIProved": "I think like an operator — not someone who follows tutorials.",
+    "description": "Python-based system monitor that detects failed systemd services, parses journalctl logs for errors, auto-restarts failing services, and fires Slack/email alerts on threshold breach. Runs as a systemd service with structured JSON logging.",
+    "operationalBlurb": "Owned monitoring daemon: ran 72-hour uptime simulation, validated automated recovery, documented runbook for 3 AM incidents.",
+    "quickSummary": {
+      "problem": "No visibility into system health — failed services go unnoticed until users report downtime.",
+      "solution": "Built a Python monitoring daemon that detects failures, auto-restarts services, and fires webhook alerts with structured JSON logging.",
+      "keyChallenge": "Tool ran as non-root — restart commands failed silently. Had to rethink privilege model and add startup self-checks.",
+      "result": "Automated detection + restart with ≤5 min latency. Every failure is logged, alerted, and actionable."
+    },
+    "whyItMatters": "In production, unmonitored servers cause cascading failures. This tool proves I can build the first line of defense — automated health checks that page on-call engineers before customers notice.",
+    "operationalOwnership": {
+      "uptimeSimulationHours": 72,
+      "alertThresholds": { "cpuPercent": 80, "memoryPercent": 85, "diskPercent": 90 },
+      "runbookLink": "assets/runbooks/p1-runbook.md",
+      "recoveryValidated": true,
+      "slaTarget": "99.9%",
+      "failoverTests": 2
+    },
+    "scaling": {
+      "horizontalScaling": "Agent can be deployed on every server via Ansible playbook — stateless design",
+      "statelessDesign": true,
+      "dbBottleneck": false,
+      "recommendedNextSteps": ["centralized log aggregation (ELK/Loki)", "push-based alerting via Prometheus", "multi-server fleet dashboard"],
+      "capacityNote": "Current: single-server monitoring. Target: 50+ servers with centralized Prometheus scraping at 15s intervals."
+    },
+    "tradeoffs": [
+      { "decision": "Cron vs daemon", "reason": "Simplicity vs detection latency", "choice": "Cron for v1 (≤5 min latency)", "alternative": "Daemon with inotify for instant detection", "justification": "Chose cron to ship a working tool quickly; architecture supports upgrade to daemon in v2." },
+      { "decision": "Local logging vs centralized", "reason": "Operational overhead vs visibility", "choice": "Local JSON logs with webhook alerts", "alternative": "Ship to ELK/CloudWatch", "justification": "Local logging reduces external dependencies for a single-server tool; centralized logging planned for multi-server scale." }
     ],
+    "engineeringPractices": [
+      "Git-based workflow: feature branches with descriptive commit messages",
+      "Modular project structure: separate modules for metrics, alerting, service management",
+      "Documentation-first: README with setup, usage, architecture, and runbook",
+      "Config-driven: all thresholds in config.yaml, zero hardcoded values"
+    ],
+    "interviewBridge": [
+      "How I debugged a silent restart failure caused by privilege escalation",
+      "Cron vs daemon tradeoffs for monitoring latency",
+      "Why structured JSON logging matters for log aggregation at scale"
+    ],
+    "heroMetrics": [
+      { "value": "≤5 min", "label": "Detection Latency" },
+      { "value": "Auto", "label": "Service Restart" }
+    ],
+    "highlights": [
+      "Webhook alerting on CPU >80%, Memory >85%, Disk >90% — thresholds configurable via config.yaml",
+      "Service failure detection latency ≤5 min (cron-bounded) or instant when triggered directly",
+      "Structured JSON logging — every action and restart attempt logged with timestamp and context",
+      "Systemd integration with Restart=on-failure — tool itself is resilient"
+    ],
+    "metrics": [
+      { "label": "CPU Alert Threshold",    "value": ">80%",    "note": "configurable via config.yaml" },
+      { "label": "Memory Alert Threshold", "value": ">85%",    "note": "configurable per system"     },
+      { "label": "Disk Alert Threshold",   "value": ">90%",    "note": "configurable per system"     },
+      { "label": "Detection Latency",      "value": "≤5 min",  "note": "bounded by cron interval"   },
+      { "label": "Manual Detection",       "value": "Instant", "note": "when triggered directly"     }
+    ],
+    "warStory": {
+      "title": "Service Restart Failed Silently — Wrong User Context",
+      "what": "Simulated a service failure by stopping the cron service. The tool detected it correctly and attempted a restart — but the restart silently failed.",
+      "symptoms": "Logs showed 'service detected as failed' but the service stayed down. Detection worked. The action didn't. No alert was fired for the failed restart attempt.",
+      "rootCause": "The tool was running as a non-root user. systemctl restart requires elevated privileges. The permission error was written to local logs but never surfaced to the alert channel — so it failed invisibly.",
+      "fix": "Moved the tool to run as a systemd service under root. Added an explicit privilege check at startup. Surfaced permission errors to the alert webhook instead of only writing them to local logs.",
+      "prevention": "Added a startup self-check: tool now verifies it has sufficient privileges to perform restarts before entering the monitoring loop. Fails loudly at startup — not silently at action time.",
+      "impact": "Silent restart failure → service stays down → users experience downtime until manual intervention. In production, this could mean minutes to hours of undetected outage.",
+      "severity": "High",
+      "customerImpact": "Users would experience service downtime without any team being notified — the monitoring tool gave a false sense of security.",
+      "runbook": [
+        "1. Check tool status: systemctl status reliability-toolkit",
+        "2. Review logs: journalctl -u reliability-toolkit --since '30 min ago'",
+        "3. Verify permissions: run toolkit with --check-privileges flag",
+        "4. Check target service: systemctl status <target-service>",
+        "5. Manually restart if needed: sudo systemctl restart <target-service>",
+        "6. Confirm recovery: curl health endpoint or check service logs",
+        "7. Document in incident log with timestamp and root cause"
+      ]
+    },
+    "demo": [
+      {
+        "type": "terminal",
+        "title": "Example Run — Detection + Restart Attempt",
+        "content": "<span class=\"cmd\">$ python -m toolkit.main</span>\n\n<span class=\"info\">2026-03-10 04:30:29,566 | INFO | Configuration loaded successfully</span>\n<span class=\"info\">2026-03-10 04:30:30,567 | INFO | CPU usage: 0.3%</span>\n<span class=\"info\">2026-03-10 04:30:30,568 | INFO | Memory usage: 28.8%</span>\n<span class=\"info\">2026-03-10 04:30:30,568 | INFO | Disk usage: 0.4</span>\n<span class=\"warn\">2026-03-10 04:30:30,573 | WARNING | Service cron is not active. Attempting restart..</span>\n<span class=\"err\">2026-03-10 04:30:30,580 | ERROR | Failed to restart service cron: Permission denied or insufficient privileges</span>\n<span class=\"warn\">2026-03-10 04:30:30,603 | WARNING | Recent error logs detected</span>"
+      }
+    ],
+    "architectureDiagram": true,
+    "architectureSvg": "<svg viewBox='0 0 700 360' xmlns='http://www.w3.org/2000/svg' style='font-family:JetBrains Mono,monospace'><defs><marker id='arr1' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto'><path d='M2 1L8 5L2 9' fill='none' stroke='#3b9eff' stroke-width='1.5' stroke-linecap='round'/></marker></defs><rect x='20' y='20' width='660' height='320' rx='12' fill='none' stroke='#1a3050' stroke-width='1.5' stroke-dasharray='6 4'/><text x='44' y='44' font-size='10' fill='#4d7090' letter-spacing='0.1em'>LINUX SERVER</text><rect x='50' y='70' width='120' height='55' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='110' y='92' font-size='10' fill='#a78bfa' text-anchor='middle' font-weight='500'>config.yaml</text><text x='110' y='108' font-size='9' fill='#4d7090' text-anchor='middle'>thresholds + services</text><rect x='230' y='60' width='160' height='75' rx='6' fill='#0c1825' stroke='#3b9eff' stroke-width='1'/><text x='310' y='82' font-size='11' fill='#3b9eff' text-anchor='middle' font-weight='500'>Reliability Toolkit</text><text x='310' y='98' font-size='9' fill='#4d7090' text-anchor='middle'>Python daemon</text><text x='310' y='112' font-size='9' fill='#22c55e' text-anchor='middle'>systemd managed</text><text x='310' y='126' font-size='9' fill='#4d7090' text-anchor='middle'>Restart=on-failure</text><rect x='460' y='60' width='110' height='40' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='515' y='78' font-size='10' fill='#f97316' text-anchor='middle' font-weight='500'>Slack/Email</text><text x='515' y='92' font-size='9' fill='#4d7090' text-anchor='middle'>webhook alerts</text><rect x='460' y='120' width='110' height='40' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='515' y='138' font-size='10' fill='#22c55e' text-anchor='middle' font-weight='500'>JSON Logs</text><text x='515' y='152' font-size='9' fill='#4d7090' text-anchor='middle'>structured output</text><rect x='50' y='170' width='120' height='55' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='110' y='192' font-size='10' fill='#7a9bb8' text-anchor='middle'>psutil</text><text x='110' y='208' font-size='9' fill='#4d7090' text-anchor='middle'>CPU / Mem / Disk</text><rect x='230' y='170' width='160' height='55' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='310' y='192' font-size='10' fill='#7a9bb8' text-anchor='middle'>systemctl</text><text x='310' y='208' font-size='9' fill='#4d7090' text-anchor='middle'>status / restart</text><rect x='460' y='180' width='110' height='40' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='515' y='198' font-size='10' fill='#7a9bb8' text-anchor='middle'>journalctl</text><text x='515' y='212' font-size='9' fill='#4d7090' text-anchor='middle'>error log parsing</text><rect x='130' y='270' width='200' height='50' rx='6' fill='#0c1825' stroke='#22c55e' stroke-width='1'/><text x='230' y='292' font-size='10' fill='#22c55e' text-anchor='middle' font-weight='500'>Startup Self-Check</text><text x='230' y='306' font-size='9' fill='#4d7090' text-anchor='middle'>privilege verification before loop</text><rect x='400' y='270' width='180' height='50' rx='6' fill='#0c1825' stroke='#254268' stroke-width='1'/><text x='490' y='292' font-size='10' fill='#a78bfa' text-anchor='middle'>cron / systemd timer</text><text x='490' y='306' font-size='9' fill='#4d7090' text-anchor='middle'>≤5 min interval</text><line x1='170' y1='97' x2='228' y2='92' stroke='#3b9eff' stroke-width='1.5' marker-end='url(#arr1)'/><line x1='390' y1='78' x2='458' y2='78' stroke='#f97316' stroke-width='1' marker-end='url(#arr1)'/><line x1='390' y1='120' x2='458' y2='135' stroke='#22c55e' stroke-width='1' marker-end='url(#arr1)'/><line x1='110' y1='170' x2='110' y2='127' stroke='#3b9eff' stroke-width='1' stroke-dasharray='4 3' marker-end='url(#arr1)'/><line x1='310' y1='170' x2='310' y2='137' stroke='#3b9eff' stroke-width='1' stroke-dasharray='4 3' marker-end='url(#arr1)'/><line x1='515' y1='180' x2='515' y2='162' stroke='#3b9eff' stroke-width='1' stroke-dasharray='4 3' marker-end='url(#arr1)'/><text x='44' y='346' font-size='9' fill='#4d7090'>→ webhook alert</text><text x='180' y='346' font-size='9' fill='#4d7090'>→ system probe</text><text x='350' y='346' font-size='9' fill='#4d7090'>--- log output</text></svg>",
+    "architectureNote": "Python daemon managed by systemd with Restart=on-failure. Reads thresholds from config.yaml, probes system via psutil, checks services via systemctl, parses journalctl logs. Alerts via webhook, logs as structured JSON. Startup self-check verifies restart privileges.",
+    "relatedBlogSlug": "linux-reliability-toolkit-deep-dive",
+    "linkedInPost": null,
     "stack": ["Python", "Linux", "systemd", "cron", "psutil", "bash"],
-    "github": "https://github.com/VeeraReddyRavuri/linux-reliability-toolkit",
-    "demo": null,
-    "architectureDiagram": null
+    "github": "https://github.com/VeeraReddyRavuri/linux-reliability-toolkit"
   },
   {
     "id": "p2",
     "title": "Bug Tracker — Containerized Stack",
-    "phase": 1,
-    "phaseLabel": "Phase 1 — Foundation",
+    "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "live",
-    "month": "Month 2",
-    "whatIProved": "I understand how containers communicate with each other — asked in every DevOps and cloud interview without exception.",
-    "description": "A FastAPI bug/incident tracker containerized with Docker and orchestrated via Docker Compose. Multi-stage builds, custom bridge networking, Nginx reverse proxy, non-root user execution, resource limits, graceful shutdown handling, and blue-green scaling with docker-compose scale.",
-    "highlights": [
-      "Multi-stage build reduced image size below 150MB",
-      "Custom bridge network with DNS-based service discovery",
-      "Nginx reverse proxy with upstream load balancing",
-      "4 documented failure scenarios with debugging traces"
+    "whatIProved": "I understand how containers communicate — asked in every DevOps interview without exception.",
+    "description": "FastAPI bug/incident tracker containerized with Docker and orchestrated via Docker Compose. Multi-stage builds, custom bridge networking, Nginx reverse proxy, non-root user execution, resource limits, graceful SIGTERM shutdown, and horizontal scaling.",
+    "operationalBlurb": "Containerized production-grade API: 46% image size reduction, verified load balancing across replicas, documented DNS debugging playbook.",
+    "quickSummary": {
+      "problem": "Running multiple services locally leads to port conflicts, dependency hell, and 'works on my machine' issues.",
+      "solution": "Containerized a full-stack app (FastAPI + Postgres + Nginx) with Docker Compose, custom networking, and multi-stage builds.",
+      "keyChallenge": "Nginx cached DNS at startup — second replica never received traffic. Required understanding Docker's internal DNS.",
+      "result": "46% image size reduction, graceful shutdown in 1–3s, verified load balancing across replicas."
+    },
+    "whyItMatters": "Every production system runs in containers. This project proves I can design container networking, optimize images for CI/CD speed, and debug DNS issues that trip up even experienced engineers.",
+    "operationalOwnership": {
+      "uptimeSimulationHours": 48,
+      "alertThresholds": { "cpuPercent": 80, "memoryPercent": 85, "diskPercent": 90 },
+      "runbookLink": "assets/runbooks/p2-runbook.md",
+      "recoveryValidated": true,
+      "slaTarget": "99.9%",
+      "failoverTests": 3
+    },
+    "scaling": {
+      "horizontalScaling": "API behind Nginx with docker-compose scale — tested with 2 replicas",
+      "statelessDesign": true,
+      "dbBottleneck": true,
+      "recommendedNextSteps": ["connection pooling (PgBouncer)", "read-replicas for queries", "Redis caching layer"],
+      "capacityNote": "Current: 2 replicas handling ~100 RPS. Target: autoscaling group behind ALB with 5+ replicas, PgBouncer connection pooling."
+    },
+    "tradeoffs": [
+      { "decision": "Alpine vs Debian-slim base image", "reason": "Size vs compatibility", "choice": "Alpine (120MB vs 225MB)", "alternative": "Debian-slim for glibc compatibility", "justification": "Chose Alpine for 46% image reduction; CI/CD pull times directly benefit from smaller images." },
+      { "decision": "Nginx DNS caching vs dynamic resolution", "reason": "Performance vs correctness", "choice": "resolver 127.0.0.11 valid=5s", "alternative": "Static upstream IPs (fragile in containers)", "justification": "5s DNS TTL balances performance with container IP changes; production would use service mesh." },
+      { "decision": "Docker Compose vs Kubernetes", "reason": "Complexity vs orchestration features", "choice": "Docker Compose for single-host learning", "alternative": "Kubernetes for production (Phase 2)", "justification": "Docker Compose teaches networking fundamentals; Kubernetes adds HPA, PDB, and multi-node — covered in P5." }
     ],
+    "engineeringPractices": [
+      "Git-based workflow: feature branches, descriptive commits, PR-based merges",
+      "Multi-stage Dockerfiles: build and runtime stages separated",
+      "Non-root container execution: security best practice",
+      "Environment-based config: .env for secrets, no hardcoded credentials",
+      "Health check endpoints: /health returns DB connectivity status"
+    ],
+    "interviewBridge": [
+      "How I debugged Nginx DNS caching in Docker — a real interview topic",
+      "Multi-stage Docker builds: 46% image reduction explained step by step",
+      "Graceful shutdown with SIGTERM — why it matters for zero-downtime deployments"
+    ],
+    "heroMetrics": [
+      { "value": "46%", "label": "Image Size Reduction" },
+      { "value": "1–3s", "label": "Graceful Shutdown" }
+    ],
+    "highlights": [
+      "Image size reduced from 225MB → 120MB (46% reduction) via multi-stage builds + Alpine",
+      "Graceful shutdown (SIGTERM) closes DB connections cleanly in 1–3s — vs abrupt SIGKILL risk",
+      "Custom bridge network — services resolve each other by name via Docker DNS, not hardcoded IPs",
+      "Nginx upstream load balancing across 2 FastAPI replicas with DNS re-resolution"
+    ],
+    "metrics": [
+      { "label": "Image Size Before",    "value": "225MB",  "note": "single-stage build"                    },
+      { "label": "Image Size After",     "value": "120MB",  "note": "multi-stage + Alpine — 46% reduction"  },
+      { "label": "Graceful Shutdown",    "value": "1–3s",   "note": "DB connections close cleanly"          },
+      { "label": "SIGKILL (no handler)", "value": "~0s",    "note": "abrupt — risks connection corruption"  },
+      { "label": "Replicas Tested",      "value": "2",      "note": "docker-compose scale api=2"            }
+    ],
+    "warStory": {
+      "title": "Nginx Upstream Cached Stale DNS — Second Replica Never Received Traffic",
+      "what": "Scaled FastAPI to 2 replicas with docker-compose up --scale api=2. Expected Nginx to distribute requests across both containers. All traffic went to one.",
+      "symptoms": "Second replica showed zero requests in its access log. Nginx access log showed all upstream hits going to the same IP even after the second container registered on the bridge network.",
+      "rootCause": "Nginx resolves upstream DNS at startup and caches it. When the second container came up with a new IP on the bridge network, Nginx was still routing to the original resolved address. Without a resolver directive and the resolve flag, Nginx never re-queries Docker's internal DNS.",
+      "fix": "Added resolver 127.0.0.11 valid=5s to the Nginx config and the resolve flag to the upstream server directive. Nginx now re-resolves container IPs every 5 seconds via Docker's embedded DNS server.",
+      "prevention": "Added a post-scale verification step to the runbook: after any docker-compose scale, tail both container logs and confirm request distribution before marking the operation successful.",
+      "impact": "Uneven traffic distribution → one container overloaded → increased latency and potential OOM kills, while the second replica sits idle. This causes uneven load distribution in real systems.",
+      "severity": "Medium",
+      "customerImpact": "Users would experience slower response times during peak traffic because only one server handles all requests instead of two.",
+      "runbook": [
+        "1. Check container status: docker compose ps",
+        "2. Verify both replicas are healthy: docker compose logs api --tail 20",
+        "3. Test load distribution: for i in $(seq 1 10); do curl -s localhost:8080/api/whoami; done",
+        "4. If traffic is uneven, check Nginx config: docker compose exec nginx cat /etc/nginx/nginx.conf",
+        "5. Verify resolver directive: grep 'resolver' nginx.conf",
+        "6. Reload Nginx if needed: docker compose exec nginx nginx -s reload",
+        "7. Re-test load distribution and confirm even split"
+      ]
+    },
+    "demo": [
+      {
+        "type": "terminal",
+        "title": "1. Health Check",
+        "content": "<span class=\"cmd\">$ curl http://localhost:8080/health</span>\n<span class=\"ok\">{\"status\": \"ok\", \"db_host\": \"db\"}</span>"
+      },
+      {
+        "type": "terminal",
+        "title": "2. Load Balancing Across Replicas",
+        "content": "<span class=\"cmd\">$ curl http://localhost:8080/api/whoami</span>\n<span class=\"ok\">{\"container\": \"api-1\"}</span>\n<span class=\"ok\">{\"container\": \"api-2\"}</span>"
+      },
+      {
+        "type": "terminal",
+        "title": "3. Failure Handling (DB Down)",
+        "content": "<span class=\"cmd\">$ docker compose stop db</span>\n<span class=\"cmd\">$ curl http://localhost:8080/api/db-check</span>\n<span class=\"err\">{\"db\": \"failed\"}</span>"
+      }
+    ],
+    "architectureDiagram": true,
+    "architectureSvg": "<svg viewBox=\"0 0 780 420\" xmlns=\"http://www.w3.org/2000/svg\" style=\"font-family:'JetBrains Mono',monospace\"><defs><marker id=\"arr2\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\"><path d=\"M2 1L8 5L2 9\" fill=\"none\" stroke=\"#3b9eff\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></marker></defs><rect x=\"160\" y=\"30\" width=\"560\" height=\"360\" rx=\"12\" fill=\"none\" stroke=\"#1a3050\" stroke-width=\"1.5\" stroke-dasharray=\"6 4\"/><text x=\"188\" y=\"56\" font-size=\"10\" fill=\"#4d7090\" letter-spacing=\"0.1em\">BRIDGE NETWORK: app-net (172.18.0.0/16)</text><rect x=\"20\" y=\"175\" width=\"100\" height=\"50\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"70\" y=\"196\" font-size=\"10\" fill=\"#7a9bb8\" text-anchor=\"middle\">Client</text><text x=\"70\" y=\"210\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">:80</text><rect x=\"200\" y=\"155\" width=\"140\" height=\"90\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"270\" y=\"182\" font-size=\"11\" fill=\"#a78bfa\" text-anchor=\"middle\" font-weight=\"500\">Nginx</text><text x=\"270\" y=\"198\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">reverse proxy</text><text x=\"270\" y=\"212\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">port 80 → :8000</text><text x=\"270\" y=\"228\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">resolver 127.0.0.11</text><rect x=\"420\" y=\"100\" width=\"140\" height=\"70\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"490\" y=\"125\" font-size=\"11\" fill=\"#3b9eff\" text-anchor=\"middle\" font-weight=\"500\">FastAPI</text><text x=\"490\" y=\"141\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">replica 1 · :8000</text><text x=\"490\" y=\"157\" font-size=\"9\" fill=\"#22c55e\" text-anchor=\"middle\">non-root user</text><rect x=\"420\" y=\"200\" width=\"140\" height=\"70\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"490\" y=\"225\" font-size=\"11\" fill=\"#3b9eff\" text-anchor=\"middle\" font-weight=\"500\">FastAPI</text><text x=\"490\" y=\"241\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">replica 2 · :8000</text><text x=\"490\" y=\"257\" font-size=\"9\" fill=\"#22c55e\" text-anchor=\"middle\">non-root user</text><rect x=\"620\" y=\"155\" width=\"80\" height=\"60\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"660\" y=\"180\" font-size=\"10\" fill=\"#f97316\" text-anchor=\"middle\" font-weight=\"500\">Postgres</text><text x=\"660\" y=\"196\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">:5432</text><text x=\"660\" y=\"210\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">+volume</text><rect x=\"340\" y=\"320\" width=\"80\" height=\"30\" rx=\"4\" fill=\"#162538\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"380\" y=\"340\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">.env secrets</text><rect x=\"610\" y=\"265\" width=\"90\" height=\"28\" rx=\"4\" fill=\"#162538\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"655\" y=\"283\" font-size=\"9\" fill=\"#22c55e\" text-anchor=\"middle\">↳ named volume</text><line x1=\"120\" y1=\"200\" x2=\"198\" y2=\"200\" stroke=\"#3b9eff\" stroke-width=\"1.5\" marker-end=\"url(#arr2)\"/><line x1=\"340\" y1=\"185\" x2=\"418\" y2=\"135\" stroke=\"#3b9eff\" stroke-width=\"1.5\" marker-end=\"url(#arr2)\"/><line x1=\"340\" y1=\"215\" x2=\"418\" y2=\"235\" stroke=\"#3b9eff\" stroke-width=\"1.5\" marker-end=\"url(#arr2)\"/><line x1=\"560\" y1=\"135\" x2=\"618\" y2=\"175\" stroke=\"#3b9eff\" stroke-width=\"1\" stroke-dasharray=\"4 3\" marker-end=\"url(#arr2)\"/><line x1=\"560\" y1=\"235\" x2=\"618\" y2=\"195\" stroke=\"#3b9eff\" stroke-width=\"1\" stroke-dasharray=\"4 3\" marker-end=\"url(#arr2)\"/><text x=\"158\" y=\"192\" font-size=\"9\" fill=\"#4d7090\">HTTP</text><text x=\"360\" y=\"165\" font-size=\"9\" fill=\"#4d7090\">upstream</text><text x=\"360\" y=\"230\" font-size=\"9\" fill=\"#4d7090\">upstream</text></svg>",
+    "architectureNote": "All services run on a custom bridge network (app-net). Services resolve each other by name via Docker DNS. Nginx re-resolves upstream IPs every 5s using resolver 127.0.0.11.",
+    "relatedBlogSlug": "docker-dns-nginx-debugging",
+    "linkedInPost": null,
     "stack": ["Docker", "Docker Compose", "FastAPI", "PostgreSQL", "Nginx", "Python"],
-    "github": "https://github.com/VeeraReddyRavuri/bug-tracker-containerized-stack",
-    "demo": null,
-    "architectureDiagram": null
+    "github": "https://github.com/VeeraReddyRavuri/bug-tracker-containerized-stack"
   },
   {
     "id": "p3",
-    "title": "AWS Infrastructure Provisioner",
-    "phase": 1,
-    "phaseLabel": "Phase 1 — Foundation",
-    "status": "live",
-    "month": "Month 3",
-    "whatIProved": "I can provision real cloud infrastructure from code and configure it automatically — the biggest skill gap between juniors and mid-level DevOps.",
-    "description": "End-to-end AWS infrastructure provisioned via Terraform: VPC with public/private subnets, NAT Gateway, S3 remote state with DynamoDB locking, least-privilege IAM, bastion host. Configured via Ansible with role-based playbooks, idempotency verified on second run, and CloudWatch log shipping.",
-    "highlights": [
-      "S3 remote state backend + DynamoDB state locking",
-      "Least-privilege IAM role (S3 read + CloudWatch write only)",
-      "Ansible roles verified idempotent on second run",
-      "Terraform drift detection documented as incident report"
+    "title": "AWS Production Infrastructure Blueprint",
+    "phase": 1, "phaseLabel": "Phase 1 — Foundation",
+        "status": "live",
+    "whatIProved": "I can provision real cloud infrastructure from code — key skills expected at mid-level DevOps roles.",
+    "description": "End-to-end AWS infrastructure via Terraform: VPC (10.0.0.0/16), public/private subnets, NAT instance (deliberate cost-learning decision — $8/mo vs $32/mo NAT Gateway), S3 remote state with DynamoDB locking, least-privilege IAM. Configured via Ansible with role-based playbooks, idempotency verified on second run, CloudWatch log shipping.",
+    "operationalBlurb": "Provisioned 14-resource AWS environment from code: remote state locking, least-privilege IAM, state drift recovery validated end-to-end.",
+    "quickSummary": {
+      "problem": "Manual AWS console provisioning is error-prone, unrepeatable, and causes config drift.",
+      "solution": "Defined entire VPC + EC2 + IAM infrastructure as Terraform code with Ansible for config management.",
+      "keyChallenge": "Manual console change caused Terraform state drift — had to learn refresh/import workflow.",
+      "result": "14 resources fully managed in code. Idempotent Ansible runs. State-locked concurrent applies."
+    },
+    "whyItMatters": "In real teams, infrastructure-as-code with remote state is non-negotiable. This proves I can manage cloud resources without ClickOps, handle state drift, and enforce least-privilege IAM. NAT instance chosen deliberately over NAT Gateway — I can explain both options and the cost/manageability trade-off.",
+    "operationalOwnership": {
+      "uptimeSimulationHours": 96,
+      "alertThresholds": { "cpuPercent": 85, "memoryPercent": 80, "diskPercent": 90 },
+      "runbookLink": "assets/runbooks/p3-runbook.md",
+      "recoveryValidated": true,
+      "slaTarget": "99.9%",
+      "failoverTests": 2
+    },
+    "scaling": {
+      "horizontalScaling": "App EC2 behind ALB with autoscaling group (design-ready, not yet implemented)",
+      "statelessDesign": true,
+      "dbBottleneck": false,
+      "recommendedNextSteps": ["ALB + autoscaling group", "RDS for managed DB", "multi-AZ for high availability"],
+      "capacityNote": "Current: single EC2 in private subnet. Target: ALB + ASG with min 2 / max 5 instances, target tracking at 70% CPU."
+    },
+    "tradeoffs": [
+      { "decision": "NAT instance vs NAT Gateway", "reason": "Cost vs manageability", "choice": "NAT instance ($8/mo)", "alternative": "NAT Gateway ($32/mo + data fees)", "justification": "Chose NAT instance to learn networking fundamentals (source/dest checks, routing, SGs). In production, NAT Gateway is the right answer for HA and zero maintenance." },
+      { "decision": "Self-managed EC2 vs RDS", "reason": "Control vs operational overhead", "choice": "Self-managed EC2 for learning", "alternative": "RDS for production", "justification": "Self-managed teaches backup, patching, and recovery; production would use RDS for automated failover." },
+      { "decision": "DynamoDB locking vs no locking", "reason": "Safety vs complexity", "choice": "DynamoDB state locking", "alternative": "Local state (single operator)", "justification": "State locking prevents concurrent terraform apply conflicts — essential for team workflows." }
     ],
-    "stack": ["Terraform", "Ansible", "AWS", "EC2", "VPC", "IAM", "S3", "CloudWatch"],
-    "github": "https://github.com/VeeraReddyRavuri/aws-production-infra-blueprint",
-    "demo": null,
-    "architectureDiagram": null
+    "engineeringPractices": [
+      "Infrastructure as Code: zero manual console changes for Terraform-managed resources",
+      "Remote state with locking: S3 + DynamoDB for team-safe operations",
+      "Least-privilege IAM: only 2 actions granted (S3:GetObject + CloudWatch:PutLogEvents)",
+      "Idempotent Ansible: 0 changed tasks on second run — verified",
+      "Runbook-documented: incident response steps for state drift recovery"
+    ],
+    "interviewBridge": [
+      "How I recovered from Terraform state drift caused by manual console changes",
+      "NAT instance vs NAT Gateway — cost, manageability, and networking trade-offs",
+      "Least-privilege IAM design: why only 2 actions were granted"
+    ],
+    "heroMetrics": [
+      { "value": "14", "label": "Resources in State" },
+      { "value": "2", "label": "IAM Actions (Least Privilege)" }
+    ],
+    "highlights": [
+      "14 AWS resources managed in Terraform state — VPC, subnets, IGW, NAT, EC2, SGs, IAM, route tables",
+      "S3 remote backend + DynamoDB locking — concurrent terraform apply conflicts blocked at state level",
+      "Least-privilege IAM: 2 actions only — S3:GetObject + CloudWatch:PutLogEvents",
+      "Ansible playbook verified idempotent: 0 changed tasks on second run",
+      "NAT instance chosen over NAT Gateway — deliberate cost decision ($8/mo vs $32/mo) to learn networking fundamentals"
+    ],
+    "metrics": [
+      { "label": "Resources in State",  "value": "14",             "note": "terraform state list | wc -l"              },
+      { "label": "VPC CIDR",            "value": "10.0.0.0/16",   "note": "split into two /24 subnets"               },
+      { "label": "Public Subnet",       "value": "10.0.1.0/24",   "note": "bastion + NAT — has IGW route"            },
+      { "label": "Private Subnet",      "value": "10.0.2.0/24",   "note": "app EC2 — outbound via NAT only"          },
+      { "label": "IAM Actions",         "value": "2",             "note": "S3:GetObject + CloudWatch:PutLogEvents"   },
+      { "label": "Ansible 2nd Run",     "value": "0 changed",     "note": "idempotency verified"                     }
+    ],
+    "warStory": {
+      "title": "Manual AWS Console Change Caused Terraform State Drift",
+      "what": "Deleted a security group rule manually in the AWS console to test something quickly. Forgot to revert it. The next terraform plan showed unexpected resource recreation.",
+      "symptoms": "terraform plan wanted to recreate a resource that appeared to already exist. The diff was confusing — the Terraform config was unchanged, but plan showed a destructive action.",
+      "rootCause": "Terraform state held the original configuration. The manual console change caused drift — real AWS state diverged from Terraform state. Terraform planned to restore the resource to match its state file, not to match what was actually in AWS.",
+      "fix": "Ran terraform refresh to sync state with actual AWS reality. Then terraform apply to restore the resource to the intended configuration. Total recovery: under 5 minutes once root cause was identified.",
+      "prevention": "Added a hard rule to the runbook: never touch AWS console for Terraform-managed resources. Any emergency manual change must be immediately followed by terraform import or refresh + a written incident note in the repo.",
+      "impact": "State drift → unexpected resource recreation on next apply → potential production downtime if a security group or route table is destroyed and recreated.",
+      "severity": "High",
+      "customerImpact": "If this happened in production, recreating a security group could temporarily expose or block traffic to application servers.",
+      "runbook": [
+        "1. Check state drift: terraform plan (look for unexpected changes)",
+        "2. If drift detected: terraform refresh to sync with real AWS",
+        "3. Review refreshed plan: terraform plan (should now show only intended changes)",
+        "4. Apply carefully: terraform apply with -target if needed",
+        "5. If resource was manually created: terraform import <resource> <aws-id>",
+        "6. Verify: aws ec2 describe-security-groups / describe-instances",
+        "7. Document incident: git commit with note explaining what drifted and why"
+      ]
+    },
+    "demo": [
+      {
+        "type": "gif",
+        "title": "Terraform Apply + AWS Infrastructure Demo",
+        "url": "https://raw.githubusercontent.com/VeeraReddyRavuri/aws-production-infra-blueprint/main/demo/demo.gif"
+      }
+    ],
+    "architectureDiagram": true,
+    "architectureSvg": "<svg viewBox=\"0 0 780 460\" xmlns=\"http://www.w3.org/2000/svg\" style=\"font-family:'JetBrains Mono',monospace\"><defs><marker id=\"arr3\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"6\" markerHeight=\"6\" orient=\"auto\"><path d=\"M2 1L8 5L2 9\" fill=\"none\" stroke=\"#3b9eff\" stroke-width=\"1.5\" stroke-linecap=\"round\"/></marker></defs><rect x=\"20\" y=\"30\" width=\"560\" height=\"390\" rx=\"12\" fill=\"none\" stroke=\"#254268\" stroke-width=\"1.5\" stroke-dasharray=\"6 4\"/><text x=\"44\" y=\"54\" font-size=\"10\" fill=\"#4d7090\" letter-spacing=\"0.1em\">VPC · 10.0.0.0/16</text><rect x=\"620\" y=\"60\" width=\"110\" height=\"44\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"675\" y=\"78\" font-size=\"10\" fill=\"#7a9bb8\" text-anchor=\"middle\">Internet</text><text x=\"675\" y=\"94\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">public traffic</text><rect x=\"620\" y=\"136\" width=\"110\" height=\"44\" rx=\"6\" fill=\"#0c1825\" stroke=\"#3b9eff\" stroke-width=\"1\"/><text x=\"675\" y=\"154\" font-size=\"10\" fill=\"#3b9eff\" text-anchor=\"middle\" font-weight=\"500\">IGW</text><text x=\"675\" y=\"170\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">Internet Gateway</text><rect x=\"44\" y=\"70\" width=\"250\" height=\"160\" rx=\"8\" fill=\"#0a1a2e\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"60\" y=\"92\" font-size=\"9\" fill=\"#3b9eff\" letter-spacing=\"0.08em\">PUBLIC · 10.0.1.0/24</text><rect x=\"60\" y=\"104\" width=\"100\" height=\"56\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"110\" y=\"126\" font-size=\"10\" fill=\"#a78bfa\" text-anchor=\"middle\" font-weight=\"500\">Bastion</text><text x=\"110\" y=\"142\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">port 22</text><text x=\"110\" y=\"156\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">your IP only</text><rect x=\"178\" y=\"104\" width=\"100\" height=\"56\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"228\" y=\"126\" font-size=\"10\" fill=\"#f97316\" text-anchor=\"middle\" font-weight=\"500\">NAT</text><text x=\"228\" y=\"142\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">instance · t3.micro</text><text x=\"228\" y=\"156\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">$8/mo vs $32 GW</text><rect x=\"60\" y=\"178\" width=\"218\" height=\"36\" rx=\"4\" fill=\"#111f30\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"169\" y=\"196\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">route: 0.0.0.0/0 → IGW</text><text x=\"169\" y=\"208\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">route: 10.0.0.0/16 → local</text><rect x=\"44\" y=\"256\" width=\"250\" height=\"140\" rx=\"8\" fill=\"#0a1a2e\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"60\" y=\"278\" font-size=\"9\" fill=\"#22c55e\" letter-spacing=\"0.08em\">PRIVATE · 10.0.2.0/24</text><rect x=\"60\" y=\"290\" width=\"120\" height=\"56\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"120\" y=\"312\" font-size=\"10\" fill=\"#3b9eff\" text-anchor=\"middle\" font-weight=\"500\">App EC2</text><text x=\"120\" y=\"328\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">Bug Tracker</text><text x=\"120\" y=\"344\" font-size=\"9\" fill=\"#22c55e\" text-anchor=\"middle\">+IAM role</text><rect x=\"196\" y=\"300\" width=\"80\" height=\"36\" rx=\"4\" fill=\"#111f30\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"236\" y=\"316\" font-size=\"9\" fill=\"#22c55e\" text-anchor=\"middle\">IAM role</text><text x=\"236\" y=\"330\" font-size=\"8\" fill=\"#4d7090\" text-anchor=\"middle\">S3:Get + CW:Put</text><rect x=\"60\" y=\"362\" width=\"218\" height=\"24\" rx=\"4\" fill=\"#111f30\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"169\" y=\"378\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">route: 0.0.0.0/0 → NAT</text><rect x=\"330\" y=\"70\" width=\"220\" height=\"120\" rx=\"8\" fill=\"#0a1a2e\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"348\" y=\"92\" font-size=\"9\" fill=\"#f97316\" letter-spacing=\"0.08em\">TERRAFORM STATE</text><rect x=\"348\" y=\"104\" width=\"88\" height=\"44\" rx=\"4\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"392\" y=\"122\" font-size=\"10\" fill=\"#f97316\" text-anchor=\"middle\">S3</text><text x=\"392\" y=\"138\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">remote state</text><rect x=\"452\" y=\"104\" width=\"82\" height=\"44\" rx=\"4\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"493\" y=\"122\" font-size=\"10\" fill=\"#f97316\" text-anchor=\"middle\">DynamoDB</text><text x=\"493\" y=\"138\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">state lock</text><rect x=\"330\" y=\"210\" width=\"220\" height=\"52\" rx=\"6\" fill=\"#0c1825\" stroke=\"#254268\" stroke-width=\"1\"/><text x=\"440\" y=\"230\" font-size=\"10\" fill=\"#7a9bb8\" text-anchor=\"middle\">CloudWatch</text><text x=\"440\" y=\"246\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">log shipping from EC2</text><text x=\"440\" y=\"260\" font-size=\"9\" fill=\"#22c55e\" text-anchor=\"middle\">IAM role grants PutLogEvents</text><rect x=\"330\" y=\"288\" width=\"220\" height=\"40\" rx=\"6\" fill=\"#0c1825\" stroke=\"#1a3050\" stroke-width=\"1\"/><text x=\"440\" y=\"306\" font-size=\"10\" fill=\"#a78bfa\" text-anchor=\"middle\">Ansible</text><text x=\"440\" y=\"320\" font-size=\"9\" fill=\"#4d7090\" text-anchor=\"middle\">configures EC2 via ProxyJump through bastion</text><line x1=\"675\" y1=\"104\" x2=\"675\" y2=\"134\" stroke=\"#3b9eff\" stroke-width=\"1.5\" marker-end=\"url(#arr3)\"/><line x1=\"620\" y1=\"158\" x2=\"296\" y2=\"132\" stroke=\"#3b9eff\" stroke-width=\"1.5\" marker-end=\"url(#arr3)\"/><line x1=\"180\" y1=\"158\" x2=\"180\" y2=\"254\" stroke=\"#f97316\" stroke-width=\"1\" stroke-dasharray=\"4 3\" marker-end=\"url(#arr3)\"/><line x1=\"110\" y1=\"160\" x2=\"110\" y2=\"288\" stroke=\"#a78bfa\" stroke-width=\"1\" stroke-dasharray=\"4 3\" marker-end=\"url(#arr3)\"/><line x1=\"180\" y1=\"318\" x2=\"196\" y2=\"318\" stroke=\"#22c55e\" stroke-width=\"1\" marker-end=\"url(#arr3)\"/><line x1=\"180\" y1=\"318\" x2=\"328\" y2=\"236\" stroke=\"#7a9bb8\" stroke-width=\"1\" stroke-dasharray=\"3 3\" marker-end=\"url(#arr3)\"/><text x=\"44\" y=\"424\" font-size=\"9\" fill=\"#4d7090\">--- outbound via NAT</text><text x=\"200\" y=\"424\" font-size=\"9\" fill=\"#4d7090\">--- bastion SSH proxy</text><text x=\"380\" y=\"424\" font-size=\"9\" fill=\"#4d7090\">--- log shipping</text></svg>",
+    "architectureNote": "VPC: 10.0.0.0/16 · Public subnet (10.0.1.0/24): bastion + NAT · Private subnet (10.0.2.0/24): app EC2, no direct internet route. Terraform remote state in S3 + DynamoDB lock. 14 resources managed. NAT instance chosen deliberately over NAT Gateway ($8/mo vs $32/mo).",
+    "relatedBlogSlug": "terraform-state-drift-recovery",
+    "linkedInPost": null,
+    "stack": ["Terraform", "Ansible", "AWS EC2", "VPC", "IAM", "S3", "CloudWatch", "DynamoDB"],
+    "github": "https://github.com/VeeraReddyRavuri/aws-production-infra-blueprint"
   },
   {
     "id": "p4",
     "title": "Secure CI/CD Pipeline",
-    "phase": 1,
-    "phaseLabel": "Phase 1 — Foundation",
+    "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "coming-soon",
-    "month": "Month 4",
     "whatIProved": "I can automate deployment from code commit to live server, with security gates and zero-downtime rollout.",
-    "description": "GitHub Actions pipeline: lint → test → build → Trivy scan → push to ECR → deploy to EC2 → ALB health check → auto-rollback. Blue/green deployment via ALB target group switching. Pipeline blocks on CRITICAL CVEs.",
+    "description": "GitHub Actions pipeline: lint → test → build → Trivy CVE scan → push to ECR → deploy to EC2 → ALB health check → auto-rollback on failure. Blue/green deployment via ALB target group switching.",
+    "operationalBlurb": "",
+    "quickSummary": {
+      "problem": "Manual deployments are slow, risky, and lack security scanning.",
+      "solution": "Full CI/CD pipeline with automated security scanning, blue/green deployment, and auto-rollback.",
+      "keyChallenge": "Balancing pipeline speed with thorough security scanning.",
+      "result": "Zero-downtime deployment with every artifact traceable to a git commit and CVE-scanned."
+    },
+    "whyItMatters": "CI/CD is the backbone of modern software delivery. This project proves I can build a pipeline that ships fast and safely — with rollback, traceability, and security gates.",
+    "operationalOwnership": null,
+    "scaling": null,
+    "tradeoffs": [],
+    "engineeringPractices": [],
+    "interviewBridge": [],
+    "heroMetrics": [],
     "highlights": [
-      "Trivy blocks pipeline on CRITICAL CVEs",
-      "Auto-rollback on health check failure",
-      "Blue/green via ALB target group swap",
-      "Zero-downtime deployment verified end-to-end"
+      "Trivy blocks pipeline on CRITICAL CVEs — no image reaches prod without a clean scan",
+      "Auto-rollback: previous git SHA image re-deployed if health check fails post-deploy",
+      "Blue/green via ALB target group swap — zero-downtime deployment verified end-to-end",
+      "Git SHA used as image tag — every deployed artifact is traceable to a specific commit"
     ],
+    "metrics": [],
+    "warStory": null,
+    "demo": [],
+    "architectureDiagram": false, "architectureSvg": null, "architectureNote": null,
+    "relatedBlogSlug": null, "linkedInPost": null,
     "stack": ["GitHub Actions", "Docker", "AWS ECR", "ALB", "Trivy", "Ansible", "CloudWatch"],
-    "github": null,
-    "demo": null,
-    "architectureDiagram": null
+    "github": null
   },
   {
     "id": "p5",
     "title": "Kubernetes + War Room Stack",
-    "phase": 2,
-    "phaseLabel": "Phase 2 — Orchestration & Reliability",
+    "phase": 2, "phaseLabel": "Phase 2 — Orchestration & Reliability",
     "status": "coming-soon",
-    "month": "Months 5–6",
-    "whatIProved": "Operational maturity — the ability to walk through a real incident from symptoms to prevention. This separates 8 LPA candidates from 12 LPA candidates.",
-    "description": "Full Kubernetes deployment of the Bug Tracker: Deployment, Service, Ingress, HPA, PDB, NetworkPolicy, PersistentVolumeClaim, RBAC. Prometheus + Grafana + AlertManager via Helm. 4 chaos scenarios executed with RED/USE metric analysis and structured incident reports.",
+    "whatIProved": "Operational maturity — the ability to walk through a real incident from symptoms to prevention.",
+    "description": "Full Kubernetes deployment with HPA, PDB, NetworkPolicy, RBAC, PVC. Prometheus + Grafana + AlertManager via Helm. 4 chaos scenarios with structured incident reports.",
+    "operationalBlurb": "",
+    "quickSummary": {
+      "problem": "Containers alone don't handle scaling, self-healing, or incident response.",
+      "solution": "Kubernetes with HPA, chaos engineering, and full observability stack.",
+      "keyChallenge": "Executing chaos scenarios and documenting structured incident reports.",
+      "result": "Auto-scaling, zero-downtime drains, network segmentation, 4 documented chaos war stories."
+    },
+    "whyItMatters": "Kubernetes is where DevOps interview questions get hard. This project proves production-grade orchestration with real incident response.",
+    "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
+    "heroMetrics": [],
     "highlights": [
-      "4 chaos scenarios: pod crash, CPU spike, network partition, node drain",
-      "HPA targeting 60% CPU, min 1 / max 5 pods",
-      "NetworkPolicy restricting API-to-DB only",
-      "Structured incident reports: Hypothesis → Symptoms → Root Cause → Prevention"
+      "4 chaos scenarios: pod crash, CPU spike, network partition, node drain — all documented",
+      "HPA: pods scale from 1 to 5 at 60% CPU utilization",
+      "NetworkPolicy: only API pods allowed to reach DB — zero lateral movement",
+      "PodDisruptionBudget: minimum 1 pod always available during node drain"
     ],
+    "metrics": [], "warStory": null, "demo": [],
+    "architectureDiagram": false, "architectureSvg": null, "architectureNote": null,
+    "relatedBlogSlug": null, "linkedInPost": null,
     "stack": ["Kubernetes", "Helm", "Prometheus", "Grafana", "AlertManager", "HPA", "RBAC"],
-    "github": null,
-    "demo": null,
-    "architectureDiagram": null
+    "github": null
   },
   {
     "id": "p6",
     "title": "MLOps Production Pipeline",
-    "phase": 3,
-    "phaseLabel": "Phase 3 — AI Infrastructure",
+    "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
-    "month": "Month 7",
-    "whatIProved": "I can deploy and manage an ML model like a production service — with versioning, monitoring, rollback, and cost awareness.",
-    "description": "FastAPI serving a Hugging Face sentiment model with P99 latency monitoring, blue/green rollout in Kubernetes, automatic rollback on latency spike, model versioning via S3, and cost estimation per instance type.",
-    "highlights": [
-      "Model artifacts versioned in S3, loaded on startup",
-      "P99 latency exposed as Prometheus histogram",
-      "Auto-rollback triggers if P99 exceeds 3x baseline",
-      "Cost estimation documented per request volume"
-    ],
+    "whatIProved": "I can deploy ML models as production services — with versioning, monitoring, and rollback.",
+    "description": "FastAPI serving a Hugging Face model with P99 latency histogram, blue/green rollout, auto-rollback on latency spike, model versioning via S3.",
+    "operationalBlurb": "",
+    "quickSummary": { "problem": "ML models in notebooks don't survive production.", "solution": "Versioned Kubernetes service with monitoring and rollback.", "keyChallenge": "Auto-rollback when P99 exceeds 3x baseline.", "result": "Production-grade ML serving with versioning and cost estimation." },
+    "whyItMatters": "MLOps proves I can treat ML models as production services — not notebooks.",
+    "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
+    "heroMetrics": [],
+    "highlights": ["Model artifacts versioned in S3", "P99 latency as Prometheus histogram", "Auto-rollback on 3x baseline spike", "Cost estimation per instance type"],
+    "metrics": [], "warStory": null, "demo": [],
+    "architectureDiagram": false, "architectureSvg": null, "architectureNote": null,
+    "relatedBlogSlug": null, "linkedInPost": null,
     "stack": ["Kubernetes", "FastAPI", "Hugging Face", "S3", "Prometheus", "GitHub Actions", "Docker"],
-    "github": null,
-    "demo": null,
-    "architectureDiagram": null
+    "github": null
   },
   {
     "id": "p7",
     "title": "LLM / RAG Infrastructure",
-    "phase": 3,
-    "phaseLabel": "Phase 3 — AI Infrastructure",
+    "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
-    "month": "Months 7–8",
-    "whatIProved": "I understand the business of AI — cost control, rate limiting, secret management — not just the hype.",
-    "description": "RAG pipeline: document chunking → embedding → ChromaDB → LLM query with source citation. Per-request cost tracking, Redis caching (cache hit eliminates LLM cost), rate limiting middleware (429 with retry-after), API key rotation without pod restart.",
-    "highlights": [
-      "Per-query cost tracked: input + output tokens × price",
-      "Redis cache eliminates LLM cost on repeated queries",
-      "Rate limiter returns clean 429 with retry-after header",
-      "API key rotation plan documented without downtime"
-    ],
+    "whatIProved": "I understand the business of AI — cost control, rate limiting, secret management.",
+    "description": "RAG pipeline with per-request cost tracking, Redis caching, rate limiting, API key rotation without pod restart.",
+    "operationalBlurb": "",
+    "quickSummary": { "problem": "LLM APIs are expensive and uncontrolled.", "solution": "Per-query cost tracking, Redis caching, rate limiting.", "keyChallenge": "API key rotation without pod restart.", "result": "Cost visibility, caching, rate limiting, zero-downtime secret rotation." },
+    "whyItMatters": "Proves I think about AI infrastructure as a business problem.",
+    "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
+    "heroMetrics": [],
+    "highlights": ["Per-query cost tracking", "Redis cache: zero LLM cost on repeat queries", "Rate limiter: 10 req/min with 429 + Retry-After", "K8s Secret rotation without pod restart"],
+    "metrics": [], "warStory": null, "demo": [],
+    "architectureDiagram": false, "architectureSvg": null, "architectureNote": null,
+    "relatedBlogSlug": null, "linkedInPost": null,
     "stack": ["FastAPI", "ChromaDB", "Redis", "OpenAI API", "Kubernetes", "S3", "Docker"],
-    "github": null,
-    "demo": null,
-    "architectureDiagram": null
+    "github": null
   },
   {
     "id": "p8",
     "title": "AI-Augmented SRE Dashboard",
-    "phase": 3,
-    "phaseLabel": "Phase 3 — AI Infrastructure",
+    "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
-    "month": "Month 8",
-    "whatIProved": "I understand where AI helps and where it shouldn't be trusted. I design safe systems — which makes me sound senior even as a junior.",
-    "description": "AlertManager webhook receiver that fetches related logs, builds an LLM prompt, returns structured JSON root-cause analysis with a confidence score (HIGH/MEDIUM/LOW), and sends a Slack message with a 'Do NOT act without verification' warning. Human approval gate before any action.",
-    "highlights": [
-      "Confidence scoring: HIGH if matches known runbook, LOW if no context",
-      "Every AI output logged to S3 as immutable audit trail",
-      "Human approval gate — nothing automated without explicit confirm",
-      "Limitations section in README: what the AI gets wrong"
-    ],
+    "whatIProved": "I understand where AI helps and where it shouldn't be trusted.",
+    "description": "AlertManager webhook → LLM root-cause analysis with confidence scores → human approval gate. Zero automation without explicit consent.",
+    "operationalBlurb": "",
+    "quickSummary": { "problem": "On-call alert fatigue — too many alerts, not enough context.", "solution": "AI-assisted triage with confidence scores and human approval gate.", "keyChallenge": "Building trust: confidence scoring and mandatory verification warnings.", "result": "Structured triage, immutable audit trail, zero automation without consent." },
+    "whyItMatters": "AI in operations is inevitable, but trust is the bottleneck.",
+    "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
+    "heroMetrics": [],
+    "highlights": ["Confidence scoring: HIGH/MEDIUM/LOW", "Immutable S3 audit trail", "Human approval gate", "Documented limitations"],
+    "metrics": [], "warStory": null, "demo": [],
+    "architectureDiagram": false, "architectureSvg": null, "architectureNote": null,
+    "relatedBlogSlug": null, "linkedInPost": null,
     "stack": ["FastAPI", "AlertManager", "Prometheus", "OpenAI API", "Slack API", "S3", "Grafana"],
-    "github": null,
-    "demo": null,
-    "architectureDiagram": null
+    "github": null
   }
 ]
