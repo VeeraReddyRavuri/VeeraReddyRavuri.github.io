@@ -107,6 +107,57 @@
       font-size: 13px;
       color: var(--accent);
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo-gears {
+      display: inline-flex;
+      align-items: center;
+      position: relative;
+      width: 22px;
+      height: 16px;
+    }
+
+    .logo-gear {
+      font-size: 16px;
+      line-height: 1;
+      color: var(--accent);
+      opacity: 0.5;
+      transition: opacity 0.3s;
+      position: absolute;
+    }
+
+    .logo-gear:first-child {
+      left: 0;
+      top: -1px;
+    }
+
+    .logo-gear.logo-gear-2 {
+      font-size: 12px;
+      left: 10px;
+      top: 5px;
+    }
+
+    .nav-logo:hover .logo-gear {
+      opacity: 1;
+    }
+
+    .nav-logo:hover .logo-gear:first-child {
+      animation: gear-cw 1.2s linear infinite;
+    }
+
+    .nav-logo:hover .logo-gear-2 {
+      animation: gear-ccw 0.9s linear infinite;
+    }
+
+    @keyframes gear-cw {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes gear-ccw {
+      to { transform: rotate(-360deg); }
     }
 
     .nav-links {
@@ -487,7 +538,7 @@
 
   <!-- ── NAV ───────────────────────────────────────────────────── -->
   <nav>
-    <a href="index.html" class="nav-logo">&lt;veera /&gt;</a>
+    <a href="index.html" class="nav-logo"><span class="logo-gears"><span class="logo-gear">⚙</span><span class="logo-gear logo-gear-2">⚙</span></span>&lt;veera /&gt;</a>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -498,7 +549,7 @@
       <li><a href="index.html#incidents">war stories</a></li>
       <li><a href="blog.html" class="active">blog</a></li>
       <li><a href="index.html#contact">contact</a></li>
-      <li><a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf" class="nav-resume-btn"
+      <li><a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf?v=2" class="nav-resume-btn"
           download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf">Resume ↓</a></li>
     </ul>
   </nav>
@@ -562,8 +613,10 @@
     });
 
     /* ── Build date ──────────────────────────────────────────────── */
-    document.getElementById('build-date').textContent =
-      new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+    const buildDate = '{{BUILD_DATE}}';
+    document.getElementById('build-date').textContent = buildDate.startsWith('{{')
+      ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+      : buildDate;
 
     /* ── Blog rendering ──────────────────────────────────────────── */
     let blogPosts = [];

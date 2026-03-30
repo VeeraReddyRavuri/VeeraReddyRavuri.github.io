@@ -23,7 +23,7 @@ function openResume(e) {
   if (e) e.preventDefault();
   const modal = document.getElementById('resume-modal');
   const iframe = document.getElementById('resume-iframe');
-  iframe.src = 'assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf';
+  iframe.src = 'assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf?v=2';
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -512,8 +512,10 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 });
 
 /* ── Build date ──────────────────────────────────────────── */
-document.getElementById('build-date').textContent =
-  new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+const buildDate = '{{BUILD_DATE}}';
+document.getElementById('build-date').textContent = buildDate.startsWith('{{')
+  ? new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+  : buildDate;
 
 /* ── Boot ─────────────────────────────────────────────────── */
 init();
