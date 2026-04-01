@@ -71,9 +71,9 @@ async function init() {
   });
 
   const phases = [
-    { id: 1, label: 'Phase 1 — Foundation',                  cls: 'p1' },
+    { id: 1, label: 'Phase 1 — Foundation', cls: 'p1' },
     { id: 2, label: 'Phase 2 — Orchestration & Reliability', cls: 'p2' },
-    { id: 3, label: 'Phase 3 — AI Infrastructure',           cls: 'p3' },
+    { id: 3, label: 'Phase 3 — AI Infrastructure', cls: 'p3' },
   ];
 
   const root = document.getElementById('projects-root');
@@ -209,17 +209,17 @@ async function init() {
         <div class="demo-proof-body">
           <div class="demo-proof-inner">
             ${p.demo.map(d => {
-              if (d.type === 'gif') {
-                return `<div class="demo-block">
+      if (d.type === 'gif') {
+        return `<div class="demo-block">
                   <div class="demo-block-title">${d.title}</div>
                   <img src="${d.url}" alt="${d.title}" class="demo-gif" loading="lazy">
                 </div>`;
-              }
-              return `<div class="demo-block">
+      }
+      return `<div class="demo-block">
                 <div class="demo-block-title">${d.title}</div>
                 <pre>${d.content}</pre>
               </div>`;
-            }).join('')}
+    }).join('')}
           </div>
         </div>
       </div>` : '';
@@ -337,11 +337,11 @@ async function init() {
   const incRoot = document.getElementById('incidents-root');
   // Use same order as live projects (P3 → P2 → P1)
   const incProjects = liveProjects.filter(p => p.warStory);
-  const incTagCls = { p1:'inc-p1', p2:'inc-p2', p3:'inc-p3' };
+  const incTagCls = { p1: 'inc-p1', p2: 'inc-p2', p3: 'inc-p3' };
 
   incProjects.forEach(p => {
     const ws = p.warStory;
-    const sevCls = { High:'sev-high', Medium:'sev-medium', Low:'sev-low' };
+    const sevCls = { High: 'sev-high', Medium: 'sev-medium', Low: 'sev-low' };
 
     const impactHTML = ws.impact ? `
       <div class="inc-field full">
@@ -449,7 +449,7 @@ function openModal(projectId) {
   if (!p || !p.architectureSvg) return;
   document.getElementById('modal-title').textContent = p.title + ' — Architecture';
   document.getElementById('modal-diagram').innerHTML = p.architectureSvg;
-  document.getElementById('modal-note').textContent  = p.architectureNote || '';
+  document.getElementById('modal-note').textContent = p.architectureNote || '';
   document.getElementById('arch-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -483,7 +483,7 @@ async function loadLatestPosts() {
     const root = document.getElementById('posts-root');
 
     latest.forEach(post => {
-      const dateStr = new Date(post.date).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' });
+      const dateStr = new Date(post.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
       const card = document.createElement('a');
       card.className = 'post-card';
       card.href = `blog.html#${post.slug}`;
@@ -514,7 +514,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 /* ── Build date ──────────────────────────────────────────── */
 const buildDate = '{{BUILD_DATE}}';
 document.getElementById('build-date').textContent = buildDate.startsWith('{{')
-  ? new Date().toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' })
+  ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
   : buildDate;
 
 /* ── Boot ─────────────────────────────────────────────────── */

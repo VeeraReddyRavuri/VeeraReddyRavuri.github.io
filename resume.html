@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Veera Reddy Ravuri — Resume</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bg: #0A1628;
+            --bg2: #0D1F3C;
+            --bg3: #112240;
+            --blue: #2E75B6;
+            --lblue: #7EB3E0;
+            --dim: #3D6B96;
+            --muted: #28507A;
+            --text: #E8F2FA;
+            --subtle: #4A7FA8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bg);
+            border-bottom: 1px solid var(--muted);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 48px;
+        }
+
+        .topbar-left {
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .topbar-left a {
+            color: var(--blue);
+            text-decoration: none;
+            opacity: 0.65;
+            transition: opacity 0.2s;
+        }
+
+        .topbar-left a:hover {
+            opacity: 1;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .build-date {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .build-date span {
+            color: var(--dim);
+        }
+
+        .btn-download {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--lblue);
+            background: transparent;
+            border: 1px solid var(--blue);
+            padding: 5px 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: inline-block;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-download:hover {
+            background: var(--blue);
+            color: #fff;
+        }
+
+        .btn-print {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--subtle);
+            background: transparent;
+            border: 1px solid var(--muted);
+            padding: 5px 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-print:hover {
+            background: var(--muted);
+            color: #fff;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 52px 48px 80px;
+        }
+
+        .header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: end;
+            gap: 32px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--muted);
+            margin-bottom: 36px;
+        }
+
+        .name {
+            font-family: 'Syne', sans-serif;
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 2px;
+            line-height: 1.05;
+        }
+
+        .name-sub {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--lblue);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 6px;
+        }
+
+        .contact-block {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .contact-block a,
+        .contact-block span {
+            font-size: 11px;
+            color: var(--dim);
+            text-decoration: none;
+            display: block;
+        }
+
+        .contact-block a:hover {
+            color: var(--lblue);
+        }
+
+        .section {
+            margin-bottom: 36px;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--blue);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--muted);
+            opacity: 0.5;
+        }
+
+        .impact-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .impact-pill {
+            background: var(--bg3);
+            border: 1px solid var(--muted);
+            border-left: 3px solid var(--blue);
+            padding: 12px 16px;
+            border-radius: 2px;
+        }
+
+        .impact-pill .metric {
+            font-family: 'Syne', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--lblue);
+            line-height: 1.2;
+        }
+
+        .impact-pill .label {
+            font-size: 11px;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        .job {
+            margin-bottom: 28px;
+        }
+
+        .job-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 2px;
+        }
+
+        .job-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .job-company {
+            font-size: 12px;
+            color: var(--lblue);
+            margin-bottom: 4px;
+        }
+
+        .job-date {
+            font-size: 11px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .job-client {
+            font-size: 11px;
+            color: var(--subtle);
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        ul.bullets {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding-left: 0;
+        }
+
+        ul.bullets li {
+            position: relative;
+            padding-left: 18px;
+            font-size: 12px;
+            color: var(--text);
+            opacity: 0.85;
+        }
+
+        ul.bullets li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--blue);
+            font-size: 10px;
+            top: 2px;
+        }
+
+        .project {
+            margin-bottom: 22px;
+        }
+
+        .project-header {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 4px;
+        }
+
+        .project-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .project-link {
+            font-size: 10px;
+            color: var(--blue);
+            text-decoration: none;
+        }
+
+        .project-link:hover {
+            color: var(--lblue);
+        }
+
+        .project-stack {
+            font-size: 10px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .skill-category {
+            font-size: 10px;
+            color: var(--blue);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .tag {
+            font-size: 10px;
+            color: var(--lblue);
+            background: var(--bg3);
+            border: 1px solid var(--muted);
+            padding: 2px 8px;
+            border-radius: 2px;
+        }
+
+        .edu-row {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 16px;
+            align-items: baseline;
+        }
+
+        .edu-school {
+            font-family: 'Syne', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .edu-degree {
+            font-size: 12px;
+            color: var(--dim);
+            margin-top: 2px;
+        }
+
+        .edu-date {
+            font-size: 11px;
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .edu-note {
+            font-size: 11px;
+            color: var(--subtle);
+            margin-top: 4px;
+        }
+
+        .cert-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--bg3);
+        }
+
+        .cert-row:last-child {
+            border-bottom: none;
+        }
+
+        .cert-name {
+            font-size: 12px;
+            color: var(--text);
+            opacity: 0.85;
+        }
+
+        .cert-issuer {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        @media print {
+            body {
+                background: #fff;
+                color: #111;
+            }
+
+            .topbar {
+                display: none;
+            }
+
+            :root {
+                --bg: #fff;
+                --bg2: #f4f6f8;
+                --bg3: #f0f4f8;
+                --blue: #1A4A7A;
+                --lblue: #2E75B6;
+                --dim: #555;
+                --muted: #999;
+                --text: #111;
+                --subtle: #666;
+            }
+
+            .page {
+                padding: 24px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding: 32px 20px;
+            }
+
+            .header {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-block {
+                text-align: left;
+            }
+
+            .impact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                padding: 10px 16px;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .topbar-right {
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .name {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <a href="index.html">← portfolio</a>&nbsp;/&nbsp;resume
+        </div>
+        <div class="topbar-right">
+            <div class="build-date">last updated: <span id="build-date"></span></div>
+            <a class="btn-download" href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf"
+                download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf">↓ download pdf</a>
+            <button class="btn-print" onclick="window.print()">🖨 print</button>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <div class="header">
+            <div>
+                <div class="name">Veera Reddy<br>Ravuri</div>
+                <div class="name-sub">Cloud &amp; DevOps Engineer</div>
+            </div>
+            <div class="contact-block">
+                <span>+91 9908201599</span>
+                <a href="mailto:veerareddy.ravuri01@gmail.com">veerareddy.ravuri01@gmail.com</a>
+                <a href="https://linkedin.com/in/veerareddyravuri" target="_blank">linkedin.com/in/veerareddyravuri</a>
+                <a href="https://github.com/VeeraReddyRavuri" target="_blank">github.com/VeeraReddyRavuri</a>
+                <a href="https://VeeraReddyRavuri.github.io" target="_blank">VeeraReddyRavuri.github.io</a>
+                <span style="margin-top:6px;color:var(--blue);">India · On-site / Hybrid / Remote</span>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Summary</div>
+            <p style="font-size:12px;color:var(--text);opacity:0.8;max-width:8000px;line-height:1.8;">
+                Software Engineer bringing over two years of enterprise experience supporting production systems and
+                automation for the Verizon billing platform. I combine this large scale operational background with
+                hands on experience in building cloud native infrastructure using AWS, Terraform, Ansible, Docker, and
+                GitHub Actions. Supported by my strong focus on root cause analysis, I am actively transitioning into
+                Cloud / DevOps / SRE roles.
+            </p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Key Impacts</div>
+            <div class="impact-grid">
+                <div class="impact-pill">
+                    <div class="metric">~$200K</div>
+                    <div class="label">Revenue loss prevented — billing defect caught affecting 24,700+ customers via
+                        SQL debugging &amp; log analysis</div>
+                </div>
+                <div class="impact-pill">
+                    <div class="metric">85% faster</div>
+                    <div class="label">Regression cycle reduced — 3 days → 4 hours via Python-Selenium framework across
+                        10+ enterprise releases</div>
+                </div>
+                <div class="impact-pill">
+                    <div class="metric">30% MTTR ↓</div>
+                    <div class="label">Mean time to resolution reduced across 100+ production incidents through
+                        structured log tracing &amp; SQL debugging</div>
+                </div>
+                <div class="impact-pill">
+                    <div class="metric">~90% less</div>
+                    <div class="label">Manual setup effort — production AWS VPC provisioned with Terraform + Ansible,
+                        100% idempotent runs</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Experience</div>
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title">Software Engineer — Production Systems &amp; Automation</div>
+                    <div class="job-date">Jan 2024 – Present</div>
+                </div>
+                <div class="job-company">HCLTech · Chennai, TN</div>
+                <div class="job-client">Client: Verizon · Rating / Billing / Finance Platform</div>
+                <ul class="bullets">
+                    <li>Identified billing calculation defect during enterprise deployment cycles affecting 24,700+
+                        customers — prevented ~$200K revenue loss via structured SQL debugging and log-level root cause
+                        analysis.</li>
+                    <li>Built Python-Selenium regression automation framework reducing execution cycles by ~85% (3 days
+                        → 4 hours) across 10+ enterprise releases.</li>
+                    <li>Investigated and resolved 100+ production-impacting incidents using log tracing and SQL
+                        debugging, maintaining SLA compliance and reducing MTTR by 30%.</li>
+                    <li>Engineered Python OCR tool to auto-convert video KT sessions into structured documentation —
+                        eliminated manual transcription effort across a 70+ engineer team.</li>
+                    <li>Served as onboarding POC for new engineers, standardizing access provisioning and knowledge
+                        transfer workflows.</li>
+                </ul>
+            </div>
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title">Technical Mentor — Cloud &amp; Python (Freelance)</div>
+                    <div class="job-date">Aug 2022 – Dec 2023</div>
+                </div>
+                <div class="job-company">Remote</div>
+                <ul class="bullets">
+                    <li>Mentored 5+ engineers and international clients in Python, Linux, Git, and cloud fundamentals —
+                        guiding them to 75%+ assessment scores and successful capstone deployments.</li>
+                </ul>
+            </div>
+            <div class="job">
+                <div class="job-header">
+                    <div class="job-title">Cloud Infrastructure Intern</div>
+                    <div class="job-date">Sep 2022 – Nov 2022</div>
+                </div>
+                <div class="job-company">SkillVertex · Bangalore, KA</div>
+                <ul class="bullets">
+                    <li>Built serverless log monitoring pipeline using AWS Lambda + CloudWatch to automate log
+                        validation and anomaly alerting — improving detection speed by 45%.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Projects</div>
+            <div class="project">
+                <div class="project-header">
+                    <div class="project-name">AWS Production Infra Blueprint</div>
+                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/aws-production-infra-blueprint"
+                        target="_blank">github ↗</a>
+                </div>
+                <div class="project-stack">Terraform · Ansible · AWS (EC2, VPC, IAM, S3, DynamoDB, CloudWatch) · Docker
+                    · GitHub Actions</div>
+                <ul class="bullets">
+                    <li>Production-grade AWS VPC with private networking, bastion access, IAM least-privilege —
+                        provisioned entirely via Terraform + Ansible (100% idempotent, ~90% manual effort reduction).
+                    </li>
+                    <li>GitHub Actions CI/CD: SSHs into EC2 and deploys on every push to main. Documented RCA for 5
+                        simulated production failures.</li>
+                </ul>
+            </div>
+            <div class="project">
+                <div class="project-header">
+                    <div class="project-name">Automated Incident Alert Pipeline</div>
+                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/lambda-log-parser"
+                        target="_blank">github ↗</a>
+                </div>
+                <div class="project-stack">Python · AWS Lambda · S3 · CloudWatch · SNS · GitHub Actions</div>
+                <ul class="bullets">
+                    <li>Event-driven pipeline: S3 uploads trigger Lambda to parse logs and publish high-severity alerts
+                        via SNS; CloudWatch alarms monitor Lambda errors end-to-end.</li>
+                    <li>Zero manual deployment — GitHub Actions auto-deploys Lambda on every push. Real SNS delivery and
+                        CloudWatch triggers validated.</li>
+                </ul>
+            </div>
+            <div class="project">
+                <div class="project-header">
+                    <div class="project-name">Containerized Microservice Stack</div>
+                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/bug-tracker-containerized-stack"
+                        target="_blank">github ↗</a>
+                </div>
+                <div class="project-stack">Docker · Docker Compose · FastAPI · PostgreSQL · Nginx</div>
+                <ul class="bullets">
+                    <li>FastAPI + PostgreSQL + Nginx via Docker Compose; DNS-based discovery, Nginx load balancing.
+                        Image size reduced 46% (225MB → 120MB) via multi-stage Alpine builds.</li>
+                    <li>Simulated 5 failure scenarios with documented RCA reports.</li>
+                </ul>
+            </div>
+            <div class="project">
+                <div class="project-header">
+                    <div class="project-name">Linux Reliability Toolkit</div>
+                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/linux-reliability-toolkit"
+                        target="_blank">github ↗</a>
+                </div>
+                <div class="project-stack">Python · psutil · systemd · journalctl · YAML · cron · Git</div>
+                <ul class="bullets">
+                    <li>Cron-driven monitoring agent (CPU, memory, disk) — ≤5-minute detection, 100% detection across 4
+                        simulated failure scenarios with automated service recovery via systemctl.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Skills</div>
+            <div class="skills-grid">
+                <div>
+                    <div class="skill-category">Cloud</div>
+                    <div class="skill-tags">
+                        <span class="tag">AWS EC2</span><span class="tag">VPC</span><span class="tag">IAM</span>
+                        <span class="tag">Lambda</span><span class="tag">S3</span><span class="tag">CloudWatch</span>
+                        <span class="tag">SNS</span><span class="tag">DynamoDB</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="skill-category">IaC &amp; Automation</div>
+                    <div class="skill-tags">
+                        <span class="tag">Terraform</span><span class="tag">Ansible</span><span class="tag">GitHub
+                            Actions</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="skill-category">Containers</div>
+                    <div class="skill-tags">
+                        <span class="tag">Docker</span><span class="tag">Docker Compose</span><span
+                            class="tag">Nginx</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="skill-category">Languages</div>
+                    <div class="skill-tags">
+                        <span class="tag">Python</span><span class="tag">Bash</span><span class="tag">SQL</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="skill-category">Databases</div>
+                    <div class="skill-tags">
+                        <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span
+                            class="tag">DynamoDB</span><span class="tag">DB2</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="skill-category">Systems</div>
+                    <div class="skill-tags">
+                        <span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">TCP/IP</span>
+                        <span class="tag">DNS</span><span class="tag">Git</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Education</div>
+            <div class="edu-row">
+                <div>
+                    <div class="edu-school">Narasaraopeta Engineering College</div>
+                    <div class="edu-degree">B.Tech — Computer Science &amp; Engineering · CGPA 8.54</div>
+                    <div class="edu-note">Best Paper Award — International Conference on AI &amp; IT (Mar 2023) · Neural
+                        network research on traffic sign recognition</div>
+                </div>
+                <div class="edu-date">May 2023</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Certifications</div>
+            <div class="cert-row">
+                <div class="cert-name">GitHub Copilot</div>
+                <div class="cert-issuer">Microsoft · Mar 2026</div>
+            </div>
+            <div class="cert-row" style="opacity:0.45;font-style:italic;">
+                <div class="cert-name">AWS Solutions Architect Associate (SAA-C03)</div>
+                <div class="cert-issuer">In progress</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const buildDate = '{{BUILD_DATE}}';
+        document.getElementById('build-date').textContent = buildDate.startsWith('{{')
+            ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+            : buildDate;
+    </script>
+
+</body>
+
+</html>

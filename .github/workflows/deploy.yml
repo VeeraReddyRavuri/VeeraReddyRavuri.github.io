@@ -30,7 +30,7 @@ jobs:
       - name: Inject Build Date
         run: |
           BUILD_DATE=$(date +'%d %b %Y')
-          sed -i "s/{{BUILD_DATE}}/$BUILD_DATE/g" main.js blog.html
+          sed -i "s/{{BUILD_DATE}}/$BUILD_DATE/g" main.js blog.html resume.html
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5

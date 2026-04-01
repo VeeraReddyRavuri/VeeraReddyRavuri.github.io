@@ -153,11 +153,15 @@
     }
 
     @keyframes gear-cw {
-      to { transform: rotate(360deg); }
+      to {
+        transform: rotate(360deg);
+      }
     }
 
     @keyframes gear-ccw {
-      to { transform: rotate(-360deg); }
+      to {
+        transform: rotate(-360deg);
+      }
     }
 
     .nav-links {
@@ -538,7 +542,8 @@
 
   <!-- ── NAV ───────────────────────────────────────────────────── -->
   <nav>
-    <a href="index.html" class="nav-logo"><span class="logo-gears"><span class="logo-gear">⚙</span><span class="logo-gear logo-gear-2">⚙</span></span>&lt;veera /&gt;</a>
+    <a href="index.html" class="nav-logo"><span class="logo-gears"><span class="logo-gear">⚙</span><span
+          class="logo-gear logo-gear-2">⚙</span></span>&lt;veera /&gt;</a>
     <button class="hamburger" id="hamburger" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -549,8 +554,7 @@
       <li><a href="index.html#incidents">war stories</a></li>
       <li><a href="blog.html" class="active">blog</a></li>
       <li><a href="index.html#contact">contact</a></li>
-      <li><a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf?v=2" class="nav-resume-btn"
-          download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf">Resume ↓</a></li>
+      <li><a href="resume.html" class="nav-resume-btn">Resume ↓</a></li>
     </ul>
   </nav>
 
@@ -589,7 +593,11 @@
 
   <!-- ── FOOTER ────────────────────────────────────────────────── -->
   <footer>
-    <div class="footer-left">© 2026 Veera Reddy Ravuri · HTML + CSS + JS · Auto-deployed via GitHub Actions</div>
+    <div class="footer-left">
+      © 2026 Veera Reddy Ravuri · HTML + CSS + JS · Auto-deployed via GitHub Actions
+      &nbsp;·&nbsp; <a href="https://github.com/VeeraReddyRavuri/VeeraReddyRavuri.github.io" class="footer-arch-link"
+        target="_blank" rel="noopener">View Portfolio Source ↗</a>
+    </div>
     <div class="footer-right">
       <div class="deploy-dot"></div>
       Last build: <span id="build-date"></span>
@@ -613,10 +621,10 @@
     });
 
     /* ── Build date ──────────────────────────────────────────────── */
-    const buildDate = '{{BUILD_DATE}}';
-    document.getElementById('build-date').textContent = buildDate.startsWith('{{')
+    const blogBuildDate = '{{BUILD_DATE}}';
+    document.getElementById('build-date').textContent = blogBuildDate.startsWith('{{')
       ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-      : buildDate;
+      : blogBuildDate;
 
     /* ── Blog rendering ──────────────────────────────────────────── */
     let blogPosts = [];
