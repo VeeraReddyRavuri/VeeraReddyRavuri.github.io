@@ -622,9 +622,9 @@
 
     /* ── Build date ──────────────────────────────────────────────── */
     const blogBuildDate = '__BUILD_DATE__';
-    document.getElementById('build-date').textContent = blogBuildDate.startsWith('{{')
+    document.getElementById('build-date').textContent = buildDate.startsWith('__')
       ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-      : blogBuildDate;
+      : buildDate;
 
     /* ── Blog rendering ──────────────────────────────────────────── */
     let blogPosts = [];
