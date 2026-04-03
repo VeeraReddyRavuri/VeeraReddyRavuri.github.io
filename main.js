@@ -512,7 +512,7 @@ document.querySelectorAll('.nav-links a').forEach(link => {
 });
 
 /* ── Build date ──────────────────────────────────────────── */
-const buildDate = '{{BUILD_DATE}}';
+const buildDate = '__BUILD_DATE__';
 document.getElementById('build-date').textContent = buildDate.startsWith('{{')
   ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
   : buildDate;
