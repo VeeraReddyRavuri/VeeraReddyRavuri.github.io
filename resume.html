@@ -74,14 +74,7 @@
             gap: 16px;
         }
 
-        .build-date {
-            font-size: 11px;
-            color: var(--muted);
-        }
 
-        .build-date span {
-            color: var(--dim);
-        }
 
         .btn-download {
             font-family: 'JetBrains Mono', monospace;
@@ -484,7 +477,7 @@
             <a href="index.html">← portfolio</a>&nbsp;/&nbsp;resume
         </div>
         <div class="topbar-right">
-            <div class="build-date">last updated: <span id="build-date">__BUILD_DATE__</span></div>
+
             <a class="btn-download" href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf"
                 download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf">↓ download pdf</a>
             <button class="btn-print" onclick="window.print()">🖨 print</button>
@@ -726,12 +719,7 @@
 
     </div>
 
-    <script>
-        const buildDate = '__BUILD_DATE__';
-        document.getElementById('build-date').textContent = buildDate.startsWith('__')
-            ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-            : buildDate;
-    </script>
+
 
 </body>
 

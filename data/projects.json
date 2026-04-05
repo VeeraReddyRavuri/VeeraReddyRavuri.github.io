@@ -4,7 +4,7 @@
     "title": "Linux & Python Reliability Toolkit",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "live",
-    "whatIProved": "I think like an operator — not someone who follows tutorials.",
+    "whatIProved": "I can build operational monitoring tools, not just follow setup guides.",
     "description": "Python-based system monitor that detects failed systemd services, parses journalctl logs for errors, auto-restarts failing services, and fires Slack/email alerts on threshold breach. Runs as a systemd service with structured JSON logging.",
     "operationalBlurb": "Owned monitoring daemon: ran 72-hour uptime simulation, validated automated recovery, documented runbook for 3 AM incidents.",
     "quickSummary": {
@@ -13,7 +13,7 @@
       "keyChallenge": "Tool ran as non-root — restart commands failed silently. Had to rethink privilege model and add startup self-checks.",
       "result": "Automated detection + restart with ≤5 min latency. Every failure is logged, alerted, and actionable."
     },
-    "whyItMatters": "In production, unmonitored servers cause cascading failures. This tool proves I can build the first line of defense — automated health checks that page on-call engineers before customers notice.",
+    "whyItMatters": "Unmonitored servers lead to cascading failures. This tool demonstrates building automated health checks that alert engineers before users are affected.",
     "operationalOwnership": {
       "uptimeSimulationHours": 72,
       "alertThresholds": { "cpuPercent": 80, "memoryPercent": 85, "diskPercent": 90 },
@@ -40,7 +40,7 @@
       "Config-driven: all thresholds in config.yaml, zero hardcoded values"
     ],
     "interviewBridge": [
-      "How I debugged a silent restart failure caused by privilege escalation",
+      "Debugging a silent restart failure due to privilege issues",
       "Cron vs daemon tradeoffs for monitoring latency",
       "Why structured JSON logging matters for log aggregation at scale"
     ],
@@ -101,7 +101,7 @@
     "title": "Bug Tracker — Containerized Stack",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "live",
-    "whatIProved": "I understand how containers communicate — asked in every DevOps interview without exception.",
+    "whatIProved": "I understand container networking, DNS resolution, and load balancing in Docker environments.",
     "description": "FastAPI bug/incident tracker containerized with Docker and orchestrated via Docker Compose. Multi-stage builds, custom bridge networking, Nginx reverse proxy, non-root user execution, resource limits, graceful SIGTERM shutdown, and horizontal scaling.",
     "operationalBlurb": "Containerized production-grade API: 46% image size reduction, verified load balancing across replicas, documented DNS debugging playbook.",
     "quickSummary": {
@@ -110,7 +110,7 @@
       "keyChallenge": "Nginx cached DNS at startup — second replica never received traffic. Required understanding Docker's internal DNS.",
       "result": "46% image size reduction, graceful shutdown in 1–3s, verified load balancing across replicas."
     },
-    "whyItMatters": "Every production system runs in containers. This project proves I can design container networking, optimize images for CI/CD speed, and debug DNS issues that trip up even experienced engineers.",
+    "whyItMatters": "Most production systems run in containers. This project covers container networking design, image optimization, and real DNS debugging.",
     "operationalOwnership": {
       "uptimeSimulationHours": 48,
       "alertThresholds": { "cpuPercent": 80, "memoryPercent": 85, "diskPercent": 90 },
@@ -139,9 +139,9 @@
       "Health check endpoints: /health returns DB connectivity status"
     ],
     "interviewBridge": [
-      "How I debugged Nginx DNS caching in Docker — a real interview topic",
+      "Debugging Nginx DNS caching in Docker",
       "Multi-stage Docker builds: 46% image reduction explained step by step",
-      "Graceful shutdown with SIGTERM — why it matters for zero-downtime deployments"
+      "Graceful shutdown with SIGTERM and why it matters for zero-downtime deployments"
     ],
     "heroMetrics": [
       { "value": "46%", "label": "Image Size Reduction" },
@@ -210,7 +210,7 @@
     "title": "AWS Production Infrastructure Blueprint",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
         "status": "live",
-    "whatIProved": "I can provision real cloud infrastructure from code — key skills expected at mid-level DevOps roles.",
+    "whatIProved": "I can provision and manage cloud infrastructure entirely through code.",
     "description": "End-to-end AWS infrastructure via Terraform: VPC (10.0.0.0/16), public/private subnets, NAT instance (deliberate cost-learning decision — $8/mo vs $32/mo NAT Gateway), S3 remote state with DynamoDB locking, least-privilege IAM. Configured via Ansible with role-based playbooks, idempotency verified on second run, CloudWatch log shipping.",
     "operationalBlurb": "Provisioned 14-resource AWS environment from code: remote state locking, least-privilege IAM, state drift recovery validated end-to-end.",
     "quickSummary": {
@@ -219,7 +219,7 @@
       "keyChallenge": "Manual console change caused Terraform state drift — had to learn refresh/import workflow.",
       "result": "14 resources fully managed in code. Idempotent Ansible runs. State-locked concurrent applies."
     },
-    "whyItMatters": "In real teams, infrastructure-as-code with remote state is non-negotiable. This proves I can manage cloud resources without ClickOps, handle state drift, and enforce least-privilege IAM. NAT instance chosen deliberately over NAT Gateway — I can explain both options and the cost/manageability trade-off.",
+    "whyItMatters": "Infrastructure-as-code with remote state is standard on real teams. This project demonstrates managing AWS resources without the console, handling state drift, and implementing least-privilege IAM. I chose a NAT instance over NAT Gateway to learn networking fundamentals, and I can explain the trade-offs.",
     "operationalOwnership": {
       "uptimeSimulationHours": 96,
       "alertThresholds": { "cpuPercent": 85, "memoryPercent": 80, "diskPercent": 90 },
@@ -248,9 +248,9 @@
       "Runbook-documented: incident response steps for state drift recovery"
     ],
     "interviewBridge": [
-      "How I recovered from Terraform state drift caused by manual console changes",
-      "NAT instance vs NAT Gateway — cost, manageability, and networking trade-offs",
-      "Least-privilege IAM design: why only 2 actions were granted"
+      "Recovering from Terraform state drift after manual console changes",
+      "NAT instance vs NAT Gateway: cost, manageability, and networking trade-offs",
+      "Least-privilege IAM design and why only 2 actions were granted"
     ],
     "heroMetrics": [
       { "value": "14", "label": "Resources in State" },
@@ -311,7 +311,7 @@
     "title": "Secure CI/CD Pipeline",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "coming-soon",
-    "whatIProved": "I can automate deployment from code commit to live server, with security gates and zero-downtime rollout.",
+    "whatIProved": "Automated deployment pipeline with security scanning, blue/green rollout, and auto-rollback.",
     "description": "GitHub Actions pipeline: lint → test → build → Trivy CVE scan → push to ECR → deploy to EC2 → ALB health check → auto-rollback on failure. Blue/green deployment via ALB target group switching.",
     "operationalBlurb": "",
     "quickSummary": {
@@ -320,7 +320,7 @@
       "keyChallenge": "Balancing pipeline speed with thorough security scanning.",
       "result": "Zero-downtime deployment with every artifact traceable to a git commit and CVE-scanned."
     },
-    "whyItMatters": "CI/CD is the backbone of modern software delivery. This project proves I can build a pipeline that ships fast and safely — with rollback, traceability, and security gates.",
+    "whyItMatters": "CI/CD is the backbone of modern software delivery. This project covers building a pipeline that ships fast and safely, with rollback, traceability, and security gates.",
     "operationalOwnership": null,
     "scaling": null,
     "tradeoffs": [],
@@ -346,7 +346,7 @@
     "title": "Kubernetes + War Room Stack",
     "phase": 2, "phaseLabel": "Phase 2 — Orchestration & Reliability",
     "status": "coming-soon",
-    "whatIProved": "Operational maturity — the ability to walk through a real incident from symptoms to prevention.",
+    "whatIProved": "Production-grade orchestration with real incident response and chaos testing.",
     "description": "Full Kubernetes deployment with HPA, PDB, NetworkPolicy, RBAC, PVC. Prometheus + Grafana + AlertManager via Helm. 4 chaos scenarios with structured incident reports.",
     "operationalBlurb": "",
     "quickSummary": {
@@ -355,7 +355,7 @@
       "keyChallenge": "Executing chaos scenarios and documenting structured incident reports.",
       "result": "Auto-scaling, zero-downtime drains, network segmentation, 4 documented chaos war stories."
     },
-    "whyItMatters": "Kubernetes is where DevOps interview questions get hard. This project proves production-grade orchestration with real incident response.",
+    "whyItMatters": "Kubernetes is where DevOps interviews get challenging. This project covers production-grade orchestration with real incident response.",
     "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
     "heroMetrics": [],
     "highlights": [
@@ -375,11 +375,11 @@
     "title": "MLOps Production Pipeline",
     "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
-    "whatIProved": "I can deploy ML models as production services — with versioning, monitoring, and rollback.",
+    "whatIProved": "ML model serving as a production service with versioning, monitoring, and rollback.",
     "description": "FastAPI serving a Hugging Face model with P99 latency histogram, blue/green rollout, auto-rollback on latency spike, model versioning via S3.",
     "operationalBlurb": "",
     "quickSummary": { "problem": "ML models in notebooks don't survive production.", "solution": "Versioned Kubernetes service with monitoring and rollback.", "keyChallenge": "Auto-rollback when P99 exceeds 3x baseline.", "result": "Production-grade ML serving with versioning and cost estimation." },
-    "whyItMatters": "MLOps proves I can treat ML models as production services — not notebooks.",
+    "whyItMatters": "MLOps demonstrates treating ML models as production services, not just notebooks.",
     "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
     "heroMetrics": [],
     "highlights": ["Model artifacts versioned in S3", "P99 latency as Prometheus histogram", "Auto-rollback on 3x baseline spike", "Cost estimation per instance type"],
@@ -394,11 +394,11 @@
     "title": "LLM / RAG Infrastructure",
     "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
-    "whatIProved": "I understand the business of AI — cost control, rate limiting, secret management.",
+    "whatIProved": "AI infrastructure with cost visibility, rate limiting, and secret management.",
     "description": "RAG pipeline with per-request cost tracking, Redis caching, rate limiting, API key rotation without pod restart.",
     "operationalBlurb": "",
     "quickSummary": { "problem": "LLM APIs are expensive and uncontrolled.", "solution": "Per-query cost tracking, Redis caching, rate limiting.", "keyChallenge": "API key rotation without pod restart.", "result": "Cost visibility, caching, rate limiting, zero-downtime secret rotation." },
-    "whyItMatters": "Proves I think about AI infrastructure as a business problem.",
+    "whyItMatters": "Shows thinking about AI infrastructure as a business problem, not just a technical one.",
     "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
     "heroMetrics": [],
     "highlights": ["Per-query cost tracking", "Redis cache: zero LLM cost on repeat queries", "Rate limiter: 10 req/min with 429 + Retry-After", "K8s Secret rotation without pod restart"],
@@ -413,11 +413,11 @@
     "title": "AI-Augmented SRE Dashboard",
     "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
-    "whatIProved": "I understand where AI helps and where it shouldn't be trusted.",
+    "whatIProved": "AI-assisted operations with confidence scoring and human approval gates.",
     "description": "AlertManager webhook → LLM root-cause analysis with confidence scores → human approval gate. Zero automation without explicit consent.",
     "operationalBlurb": "",
     "quickSummary": { "problem": "On-call alert fatigue — too many alerts, not enough context.", "solution": "AI-assisted triage with confidence scores and human approval gate.", "keyChallenge": "Building trust: confidence scoring and mandatory verification warnings.", "result": "Structured triage, immutable audit trail, zero automation without consent." },
-    "whyItMatters": "AI in operations is inevitable, but trust is the bottleneck.",
+    "whyItMatters": "AI in operations is growing, but trust and safety are the bottleneck.",
     "operationalOwnership": null, "scaling": null, "tradeoffs": [], "engineeringPractices": [], "interviewBridge": [],
     "heroMetrics": [],
     "highlights": ["Confidence scoring: HIGH/MEDIUM/LOW", "Immutable S3 audit trail", "Human approval gate", "Documented limitations"],

@@ -2029,15 +2029,6 @@ footer {
   color: var(--muted);
 }
 
-.footer-right {
-  font-family: var(--fm);
-  font-size: 11px;
-  color: var(--muted);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .footer-arch-link {
   color: var(--accent);
   text-decoration: none;
@@ -2048,13 +2039,6 @@ footer {
   text-decoration: underline;
 }
 
-.deploy-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--green);
-  animation: blink 2.5s ease-in-out infinite;
-}
 
 /* ── KEYFRAMES ────────────────────────────────────────────── */
 @keyframes fadeUp {

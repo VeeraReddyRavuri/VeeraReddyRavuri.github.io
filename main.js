@@ -135,7 +135,7 @@ async function init() {
           <span class="ops-item"><strong>Alerts:</strong> CPU ≥${p.operationalOwnership.alertThresholds.cpuPercent}% / Mem ≥${p.operationalOwnership.alertThresholds.memoryPercent}%</span>
           <span class="ops-item"><strong>SLA target:</strong> ${p.operationalOwnership.slaTarget}</span>
           <span class="ops-item"><strong>Recovery:</strong> ${p.operationalOwnership.recoveryValidated ? '✓ Validated' : '○ Pending'} (${p.operationalOwnership.failoverTests} tests)</span>
-          <span class="ops-item"><a href="${p.operationalOwnership.runbookLink}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">📋 Open runbook →</a></span>
+          <span class="ops-item"><a href="${p.operationalOwnership.runbookLink}" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:none;">Open runbook →</a></span>
         </div>
       </div>` : '';
 
@@ -182,7 +182,7 @@ async function init() {
     // Interview Bridge
     const ibHTML = (p.interviewBridge && p.interviewBridge.length) ? `
       <div class="interview-bridge">
-        <div class="ib-label">💬 Ask me about</div>
+        <div class="ib-label">Ask me about</div>
         <div class="ib-topics">
           ${p.interviewBridge.map(t => `<span class="ib-topic">${t}</span>`).join('')}
         </div>
@@ -203,7 +203,7 @@ async function init() {
     const demoHTML = (p.demo && p.demo.length) ? `
       <div class="demo-proof" data-demo="${p.id}">
         <div class="demo-proof-header">
-          <span class="demo-proof-label">📸 Live Proof — Terminal / Demo Output</span>
+          <span class="demo-proof-label">Live Proof</span>
           <span class="demo-proof-chevron">▶</span>
         </div>
         <div class="demo-proof-body">
@@ -229,19 +229,19 @@ async function init() {
       <div class="arch-preview" onclick="openModal('${p.id}')">
         ${p.architectureSvg}
         <div class="arch-preview-overlay">
-          <span class="arch-preview-cta">🏗 Click to view full architecture →</span>
+          <span class="arch-preview-cta">View full architecture →</span>
         </div>
       </div>` : '';
 
     // Build links bar (at TOP)
     const archBtn = p.architectureDiagram
-      ? `<button class="btn btn-ghost" onclick="openModal('${p.id}')">🏗 Architecture</button>`
+      ? `<button class="btn btn-ghost" onclick="openModal('${p.id}')">Architecture</button>`
       : '';
     const ghLink = p.github
       ? `<a href="${p.github}" class="card-link" target="_blank" rel="noopener">⌥ GitHub</a>`
       : '';
     const blogBtn = p.relatedBlogSlug
-      ? `<a href="blog.html#${p.relatedBlogSlug}" class="btn-deepdive">📝 Deep-Dive</a>`
+      ? `<a href="blog.html#${p.relatedBlogSlug}" class="btn-deepdive">Deep-Dive</a>`
       : '';
     const linkedInBtn = p.linkedInPost
       ? `<a href="${p.linkedInPost}" class="btn-deepdive" target="_blank" rel="noopener">↗ LinkedIn</a>`
@@ -511,11 +511,6 @@ document.querySelectorAll('.nav-links a').forEach(link => {
   });
 });
 
-/* ── Build date ──────────────────────────────────────────── */
-const buildDate = '__BUILD_DATE__';
-document.getElementById('build-date').textContent = buildDate.startsWith('__')
-  ? new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-  : buildDate;
 
 /* ── Boot ─────────────────────────────────────────────────── */
 init();
