@@ -1,6 +1,7 @@
 [
   {
     "id": "p1",
+    "displayOrder": 3,
     "title": "Linux & Python Reliability Toolkit",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "live",
@@ -98,6 +99,7 @@
   },
   {
     "id": "p2",
+    "displayOrder": 2,
     "title": "Bug Tracker — Containerized Stack",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
     "status": "live",
@@ -207,6 +209,7 @@
   },
   {
     "id": "p3",
+    "displayOrder": 1,
     "title": "AWS Production Infrastructure Blueprint",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
         "status": "live",
@@ -308,9 +311,10 @@
   },
   {
     "id": "p4",
+    "displayOrder": 4,
     "title": "Secure CI/CD Pipeline",
     "phase": 1, "phaseLabel": "Phase 1 — Foundation",
-    "status": "coming-soon",
+    "status": "in-progress",
     "whatIProved": "Automated deployment pipeline with security scanning, blue/green rollout, and auto-rollback.",
     "description": "GitHub Actions pipeline: lint → test → build → Trivy CVE scan → push to ECR → deploy to EC2 → ALB health check → auto-rollback on failure. Blue/green deployment via ALB target group switching.",
     "operationalBlurb": "",
@@ -343,6 +347,7 @@
   },
   {
     "id": "p5",
+    "displayOrder": 5,
     "title": "Kubernetes + War Room Stack",
     "phase": 2, "phaseLabel": "Phase 2 — Orchestration & Reliability",
     "status": "coming-soon",
@@ -372,6 +377,7 @@
   },
   {
     "id": "p6",
+    "displayOrder": 6,
     "title": "MLOps Production Pipeline",
     "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
@@ -391,6 +397,7 @@
   },
   {
     "id": "p7",
+    "displayOrder": 7,
     "title": "LLM / RAG Infrastructure",
     "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",
@@ -410,6 +417,7 @@
   },
   {
     "id": "p8",
+    "displayOrder": 8,
     "title": "AI-Augmented SRE Dashboard",
     "phase": 3, "phaseLabel": "Phase 3 — AI Infrastructure",
     "status": "coming-soon",

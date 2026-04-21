@@ -1,0 +1,488 @@
+/* ── RESUME PAGE — Self-contained styles ──────────────────── */
+:root {
+  --bg: #0A1628;
+  --bg2: #0D1F3C;
+  --bg3: #112240;
+  --blue: #2E75B6;
+  --lblue: #7EB3E0;
+  --dim: #3D6B96;
+  --muted: #28507A;
+  --text: #E8F2FA;
+  --subtle: #4A7FA8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── TOPBAR ───────────────────────────────────────────────── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg);
+  border-bottom: 1px solid var(--muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 48px;
+}
+
+.topbar-left {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--blue);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.topbar-left a {
+  color: var(--blue);
+  text-decoration: none;
+  opacity: 0.65;
+  transition: opacity 0.2s;
+}
+
+.topbar-left a:hover {
+  opacity: 1;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-download {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--lblue);
+  background: transparent;
+  border: 1px solid var(--blue);
+  padding: 5px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-download:hover {
+  background: var(--blue);
+  color: #fff;
+}
+
+.btn-print {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--subtle);
+  background: transparent;
+  border: 1px solid var(--muted);
+  padding: 5px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-print:hover {
+  background: var(--muted);
+  color: #fff;
+}
+
+/* ── PAGE ─────────────────────────────────────────────────── */
+.page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 52px 48px 80px;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 32px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--muted);
+  margin-bottom: 36px;
+}
+
+.name {
+  font-family: 'Syne', sans-serif;
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 2px;
+  line-height: 1.05;
+}
+
+.name-sub {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--lblue);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ── CONTACT BLOCK ────────────────────────────────────────── */
+.contact-block {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contact-block a,
+.contact-block span {
+  font-size: 11px;
+  color: var(--dim);
+  text-decoration: none;
+  display: block;
+}
+
+.contact-block a:hover {
+  color: var(--lblue);
+}
+
+.contact-block-location {
+  margin-top: 6px;
+  color: var(--blue);
+}
+
+/* ── SECTIONS ─────────────────────────────────────────────── */
+.section {
+  margin-bottom: 36px;
+}
+
+.section-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--muted);
+  opacity: 0.5;
+}
+
+/* ── IMPACT ───────────────────────────────────────────────── */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.impact-pill {
+  background: var(--bg3);
+  border: 1px solid var(--muted);
+  border-left: 3px solid var(--blue);
+  padding: 12px 16px;
+  border-radius: 2px;
+}
+
+.impact-pill .metric {
+  font-family: 'Syne', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--lblue);
+  line-height: 1.2;
+}
+
+.impact-pill .label {
+  font-size: 11px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+
+/* ── JOBS ─────────────────────────────────────────────────── */
+.job {
+  margin-bottom: 28px;
+}
+
+.job-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 2px;
+}
+
+.job-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.job-company {
+  font-size: 12px;
+  color: var(--lblue);
+  margin-bottom: 4px;
+}
+
+.job-date {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.job-client {
+  font-size: 11px;
+  color: var(--subtle);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+ul.bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-left: 0;
+}
+
+ul.bullets li {
+  position: relative;
+  padding-left: 18px;
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+ul.bullets li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--blue);
+  font-size: 10px;
+  top: 2px;
+}
+
+/* ── PROJECTS ─────────────────────────────────────────────── */
+.project {
+  margin-bottom: 22px;
+}
+
+.project-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 4px;
+}
+
+.project-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.project-link {
+  font-size: 10px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.project-link:hover {
+  color: var(--lblue);
+}
+
+.project-stack {
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.5px;
+}
+
+/* ── SKILLS ───────────────────────────────────────────────── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.skill-category {
+  font-size: 10px;
+  color: var(--blue);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  font-size: 10px;
+  color: var(--lblue);
+  background: var(--bg3);
+  border: 1px solid var(--muted);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+/* ── EDUCATION ────────────────────────────────────────────── */
+.edu-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: baseline;
+}
+
+.edu-school {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.edu-degree {
+  font-size: 12px;
+  color: var(--dim);
+  margin-top: 2px;
+}
+
+.edu-date {
+  font-size: 11px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.edu-note {
+  font-size: 11px;
+  color: var(--subtle);
+  margin-top: 4px;
+}
+
+/* ── CERTIFICATIONS ───────────────────────────────────────── */
+.cert-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--bg3);
+}
+
+.cert-row:last-child {
+  border-bottom: none;
+}
+
+.cert-name {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.cert-issuer {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.cert-row--pending {
+  opacity: 0.45;
+  font-style: italic;
+}
+
+/* ── SUMMARY ──────────────────────────────────────────────── */
+.resume-summary {
+  font-size: 12px;
+  color: var(--text);
+  opacity: 0.8;
+  max-width: 8000px;
+  line-height: 1.8;
+}
+
+/* ── PRINT ────────────────────────────────────────────────── */
+@media print {
+  body {
+    background: #fff;
+    color: #111;
+  }
+
+  .topbar {
+    display: none;
+  }
+
+  :root {
+    --bg: #fff;
+    --bg2: #f4f6f8;
+    --bg3: #f0f4f8;
+    --blue: #1A4A7A;
+    --lblue: #2E75B6;
+    --dim: #555;
+    --muted: #999;
+    --text: #111;
+    --subtle: #666;
+  }
+
+  .page {
+    padding: 24px;
+  }
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .page {
+    padding: 32px 20px;
+  }
+
+  .header {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-block {
+    text-align: left;
+  }
+
+  .impact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .topbar-right {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .name {
+    font-size: 32px;
+  }
+}
