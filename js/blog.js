@@ -36,15 +36,22 @@ function parseMarkdown(mdString) {
   html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
   html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
   html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+  html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
 
   html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_, lang, code) => {
     const langLabel = lang ? `<span class="code-lang">${lang}</span>` : '';
     return `${langLabel}<pre><code class="lang-${lang}">${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>`;
   });
 
+  html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,
+    '<img src="$2" alt="$1" loading="lazy">');
+
   html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
   html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+  html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
 
   html = html.replace(/^\|(.+)\|$/gm, (match) => {
     const cells = match.split('|').filter(c => c.trim());
@@ -58,6 +65,9 @@ function parseMarkdown(mdString) {
   });
 
   html = html.replace(/^> (.+)$/gm, '<blockquote><p>$1</p></blockquote>');
+
+  html = html.replace(/^- \[x\] (.+)$/gm, '<li class="task-done">$1</li>');
+  html = html.replace(/^- \[ \] (.+)$/gm, '<li class="task-pending">$1</li>');
 
   html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
   html = html.replace(/(<li>[\s\S]*?<\/li>\n?)+/g, (match) => {
@@ -110,8 +120,8 @@ export async function initBlogPreviews() {
         <span class="blog-strip-meta">${dateStr} · ${readTime} min</span>`;
       root.appendChild(item);
     }
-  } catch {
-    // Blog posts optional — fail silently
+  } catch (err) {
+    console.error('[blog] initBlogPreviews failed:', err);
   }
 }
 
@@ -138,7 +148,7 @@ export async function initBlogPage() {
       tags.forEach(t => allTags.add(t));
       postCache.set(slug, { slug, meta, content, readTime, tags });
     }
-  } catch {
+  } catch (err) {
     const blogList = document.getElementById('blog-list');
     if (blogList) {
       const errorEl = document.createElement('div');
@@ -146,6 +156,7 @@ export async function initBlogPage() {
       errorEl.innerHTML = `Could not load blog posts. Run a local server:<br><strong>python3 -m http.server</strong>`;
       blogList.appendChild(errorEl);
     }
+    console.error('[blog] initBlogPage failed:', err);
     return;
   }
 

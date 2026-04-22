@@ -40,6 +40,11 @@
   animation: fadeUp 0.6s ease 0.1s forwards;
 }
 
+h1.hero-name {
+  opacity: 0;
+  animation: fadeUp 0.6s ease 0.2s forwards;
+}
+
 
 .hero-currently-building {
   opacity: 0;

@@ -1,1 +1,6 @@
-["terraform-state-drift-recovery", "docker-dns-nginx-debugging", "linux-reliability-toolkit-deep-dive"]
+[
+    "run-time-failure-after-ci-run",
+    "terraform-state-drift-recovery",
+    "docker-dns-nginx-debugging",
+    "linux-reliability-toolkit-deep-dive"
+]

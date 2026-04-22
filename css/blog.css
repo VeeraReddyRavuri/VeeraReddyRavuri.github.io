@@ -378,6 +378,39 @@
   margin-bottom: var(--space-sm);
 }
 
+/* ── TASK LISTS ──────────────────────────────────────────── */
+.blog-content li.task-done,
+.blog-content li.task-pending {
+  list-style: none;
+  padding-left: 24px;
+  position: relative;
+}
+
+.blog-content li.task-done::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--green);
+  font-family: var(--fm);
+}
+
+.blog-content li.task-pending::before {
+  content: '○';
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+  font-family: var(--fm);
+}
+
+/* ── IMAGES ──────────────────────────────────────────────── */
+.blog-content img {
+  max-width: 100%;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  margin: var(--space-sm) 0;
+  display: block;
+}
+
 /* ── COMPACT BLOG STRIP (index page) ──────────────────────── */
 .blog-post-strip {
   display: flex;
