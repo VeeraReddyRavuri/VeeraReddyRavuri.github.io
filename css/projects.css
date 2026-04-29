@@ -640,120 +640,119 @@
   padding: 3px 10px;
 }
 
-/* ── DEMO PROOF ───────────────────────────────────────────── */
-.demo-proof {
-  margin-bottom: 18px;
+/* ── DEMO PROOF ──────────────────────────────────────────── */
+.demo-proof--card {
+  display: none;
+  margin-top: var(--space-sm);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
+  background: var(--bg3);
   overflow: hidden;
 }
 
-.demo-proof-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px var(--space-sm);
-  background: var(--bg3);
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.demo-proof-header:hover {
-  background: var(--bg4);
-}
-
-.demo-proof-label {
-  font-family: var(--fm);
-  font-size: 10px;
-  color: var(--green);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-}
-
-.demo-proof-chevron {
-  font-size: 10px;
-  color: var(--muted);
-  transition: transform 0.3s;
-}
-
-.demo-proof.open .demo-proof-chevron {
-  transform: rotate(90deg);
+.demo-proof--card.open {
+  display: block;
 }
 
 .demo-proof-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.demo-proof.open .demo-proof-body {
-  max-height: 800px;
-}
-
-.demo-proof-inner {
   padding: var(--space-sm);
-  background: var(--bg);
-  font-family: var(--fm);
-  font-size: 12px;
-  color: var(--muted2);
-  line-height: 1.7;
-}
-
-.demo-proof-inner .demo-block {
-  margin-bottom: 14px;
-}
-
-.demo-proof-inner .demo-block:last-child {
-  margin-bottom: 0;
 }
 
 .demo-block-title {
+  font-family: var(--fm);
   font-size: 11px;
-  color: var(--accent);
-  margin-bottom: 6px;
-  font-weight: 500;
-}
-
-.demo-block pre {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 12px 14px;
-  overflow-x: auto;
-  font-size: 11px;
-  color: var(--muted2);
-  line-height: 1.6;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   margin-bottom: var(--space-xs);
-}
-
-.demo-block pre .cmd {
-  color: var(--accent);
-}
-
-.demo-block pre .warn {
-  color: var(--orange);
-}
-
-.demo-block pre .err {
-  color: var(--red);
-}
-
-.demo-block pre .ok {
-  color: var(--green);
-}
-
-.demo-block pre .info {
-  color: var(--muted2);
 }
 
 .demo-gif {
   width: 100%;
+  height: auto;
   border-radius: var(--radius-sm);
+  display: block;
+}
+
+/* ── TERMINAL OUTPUT COLORS ──────────────────────────────── */
+.demo-terminal {
+  font-family: var(--fm);
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted2);
+  background: var(--bg);
   border: 1px solid var(--border);
-  margin-top: var(--space-xs);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.demo-terminal .cmd {
+  color: var(--accent);
+}
+
+.demo-terminal .info {
+  color: var(--muted2);
+}
+
+.demo-terminal .warn {
+  color: var(--orange);
+}
+
+.demo-terminal .err {
+  color: var(--red);
+}
+
+.demo-terminal .ok {
+  color: var(--green);
+}
+
+/* ── DEMO TABS ───────────────────────────────────────────── */
+.demo-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 0 var(--space-sm) 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.demo-tab {
+  font-family: var(--fm);
+  font-size: 11px;
+  color: var(--muted2);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.demo-tab:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.demo-tab--active {
+  background: rgba(59, 158, 255, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── DEMO PANELS ─────────────────────────────────────────── */
+.demo-panels {
+  position: relative;
+}
+
+.demo-panel {
+  display: none;
+}
+
+.demo-panel--active {
+  display: block;
 }
 
 /* ── ARCHITECTURE PREVIEW ─────────────────────────────────── */
@@ -847,6 +846,7 @@
   max-height: 0;
   padding-top: var(--space-sm);
 }
+
 
 /* ── GEAR PIPELINE CONNECTOR ─────────────────────────────── */
 .p-gear-connector {

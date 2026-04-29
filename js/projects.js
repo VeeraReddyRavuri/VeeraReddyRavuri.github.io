@@ -253,29 +253,39 @@ export async function initProjects() {
       </div>` : '';
 
     // Demo proof
-    const demoHTML = (p.demo && p.demo.length) ? `
-      <div class="demo-proof" data-demo="${sanitize(p.id)}">
-        <div class="demo-proof-header">
-          <span class="demo-proof-label">Live Proof</span>
-          <span class="demo-proof-chevron">▶</span>
-        </div>
-        <div class="demo-proof-body">
-          <div class="demo-proof-inner">
-            ${p.demo.map(d => {
-              if (d.type === 'gif') {
-                return `<div class="demo-block">
-                  <div class="demo-block-title">${sanitize(d.title)}</div>
-                  <img src="${sanitize(d.url)}" alt="${sanitize(d.title)}" class="demo-gif" loading="lazy">
-                </div>`;
-              }
-              return `<div class="demo-block">
-                <div class="demo-block-title">${sanitize(d.title)}</div>
-                <pre>${d.content}</pre>
-              </div>`;
-            }).join('')}
+    // Demo proof — moved outside <details>, toggled by links bar button
+    const demoHTML = (p.demo && p.demo.length) ? (() => {
+      const hasTabs = p.demo.length > 1;
+
+      const tabsHTML = hasTabs ? `
+        <div class="demo-tabs">
+          ${p.demo.map((d, idx) => `
+            <button class="demo-tab ${idx === 0 ? 'demo-tab--active' : ''}"
+                    data-demo-idx="${idx}"
+                    aria-label="Show demo: ${sanitize(d.title)}">
+              ${sanitize(d.title)}
+            </button>`).join('')}
+        </div>` : '';
+
+      const panelsHTML = p.demo.map((d, idx) => {
+        const content = d.type === 'gif'
+          ? `<img src="${sanitize(d.url)}" alt="${sanitize(d.title)}" class="demo-gif" loading="lazy">`
+          : `<pre class="demo-terminal">${d.content || ''}</pre>`;
+
+        return `<div class="demo-panel ${idx === 0 ? 'demo-panel--active' : ''}" data-panel-idx="${idx}">
+          ${!hasTabs ? `<div class="demo-block-title">${sanitize(d.title)}</div>` : ''}
+          ${content}
+        </div>`;
+      }).join('');
+
+      return `
+        <div class="demo-proof demo-proof--card" data-demo="${sanitize(p.id)}">
+          <div class="demo-proof-body">
+            ${tabsHTML}
+            <div class="demo-panels">${panelsHTML}</div>
           </div>
-        </div>
-      </div>` : '';
+        </div>`;
+    })() : '';
 
     // Architecture preview
     const archPreviewHTML = (p.architectureDiagram && p.architectureSvg) ? `
@@ -299,7 +309,10 @@ export async function initProjects() {
     const linkedInBtn = p.linkedInPost
       ? `<a href="${sanitize(p.linkedInPost)}" class="btn-deepdive" target="_blank" rel="noopener">↗ LinkedIn</a>`
       : '';
-    const linksBar = `<div class="card-links-bar">${ghLink}${archBtn}${blogBtn}${linkedInBtn}</div>`;
+    const demoBtn = (p.demo && p.demo.length)
+      ? `<button class="btn btn-ghost demo-toggle-btn" data-demo-id="${sanitize(p.id)}" aria-label="Toggle live demo">▶ Live Demo</button>`
+      : '';
+    const linksBar = `<div class="card-links-bar">${ghLink}${archBtn}${blogBtn}${linkedInBtn}${demoBtn}</div>`;
 
     const item = document.createElement('div');
     item.className = 'pipeline-item';
@@ -318,6 +331,7 @@ export async function initProjects() {
       <div class="card-proved">"${sanitize(p.whatIProved)}"</div>
       ${heroMetricsHTML}
       ${linksBar}
+      ${demoHTML}
       <details class="card-details">
         <summary class="see-more-btn">
           <span class="see-more-chevron">▶</span> See full details
@@ -333,7 +347,6 @@ export async function initProjects() {
           ${scalingHTML}
           ${tradeoffHTML}
           ${archPreviewHTML}
-          ${demoHTML}
           ${engHTML}
           ${ibHTML}
         </div>
@@ -482,10 +495,34 @@ export async function initProjects() {
     });
   }
 
-  // ── Demo proof toggle ──────────────────────────────────────
-  document.querySelectorAll('.demo-proof-header').forEach(header => {
-    header.addEventListener('click', () => {
-      header.closest('.demo-proof').classList.toggle('open');
+  // ── Demo toggle via links bar button ──────────────────────
+  document.querySelectorAll('.demo-toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.project-card');
+      const demo = card.querySelector('.demo-proof--card');
+      if (!demo) return;
+      const isOpen = demo.classList.toggle('open');
+      btn.innerHTML = isOpen ? '▼ Live Demo' : '▶ Live Demo';
+    });
+  });
+
+  // ── Demo tab switcher ──────────────────────────────────────
+  document.querySelectorAll('.demo-tabs').forEach(tabGroup => {
+    tabGroup.addEventListener('click', e => {
+      const tab = e.target.closest('.demo-tab');
+      if (!tab) return;
+
+      const demoProof = tab.closest('.demo-proof');
+      const idx = tab.dataset.demoIdx;
+
+      // Update active tab
+      tabGroup.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('demo-tab--active'));
+      tab.classList.add('demo-tab--active');
+
+      // Update active panel
+      demoProof.querySelectorAll('.demo-panel').forEach(panel => {
+        panel.classList.toggle('demo-panel--active', panel.dataset.panelIdx === idx);
+      });
     });
   });
 
@@ -497,4 +534,5 @@ export async function initProjects() {
   document.querySelectorAll('[data-arch-id]').forEach(preview => {
     preview.addEventListener('click', () => openArchModal(preview.dataset.archId));
   });
+
 }
