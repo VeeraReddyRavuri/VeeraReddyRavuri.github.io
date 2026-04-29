@@ -265,6 +265,7 @@
   border-collapse: collapse;
   margin-bottom: 22px;
   font-size: 13px;
+  table-layout: fixed;
 }
 
 .blog-content th,
@@ -273,12 +274,17 @@
   border: 1px solid var(--border);
   text-align: left;
   color: var(--muted2);
+  word-wrap: break-word;
 }
 
 .blog-content th {
   background: var(--bg3);
   color: var(--text);
   font-weight: 500;
+}
+
+.blog-content thead {
+  border-bottom: 2px solid var(--border2);
 }
 
 .blog-content blockquote {

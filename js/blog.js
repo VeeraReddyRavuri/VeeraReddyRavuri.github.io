@@ -53,15 +53,34 @@ function parseMarkdown(mdString) {
 
   html = html.replace(/~~(.+?)~~/g, '<del>$1</del>');
 
-  html = html.replace(/^\|(.+)\|$/gm, (match) => {
-    const cells = match.split('|').filter(c => c.trim());
-    if (cells.every(c => /^[\s\-:]+$/.test(c))) return '';
-    const tag = match.includes('---') ? 'th' : 'td';
-    return '<tr>' + cells.map(c => `<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
-  });
+  // Table parsing — proper thead/tbody structure
+  html = html.replace(/((?:^\|.+\|\n?)+)/gm, (tableBlock) => {
+    const rows = tableBlock.trim().split('\n').filter(r => r.trim());
+    if (rows.length < 2) return tableBlock;
 
-  html = html.replace(/(<tr>[\s\S]*?<\/tr>\n?)+/g, (match) => {
-    return `<table>${match}</table>`;
+    // Identify separator row (e.g. |---|---|)
+    const sepIndex = rows.findIndex(r => /^\|[\s\-:|]+\|$/.test(r));
+    if (sepIndex === -1) return tableBlock;
+
+    // Header rows = everything before separator
+    const headerRows = rows.slice(0, sepIndex);
+    // Data rows = everything after separator
+    const dataRows = rows.slice(sepIndex + 1);
+
+    function parseRow(row, tag) {
+      const cells = row.split('|').filter((_, i, arr) => i > 0 && i < arr.length - 1);
+      return '<tr>' + cells.map(c => `<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+    }
+
+    const thead = headerRows.length
+      ? '<thead>' + headerRows.map(r => parseRow(r, 'th')).join('') + '</thead>'
+      : '';
+
+    const tbody = dataRows.length
+      ? '<tbody>' + dataRows.map(r => parseRow(r, 'td')).join('') + '</tbody>'
+      : '';
+
+    return `<table>${thead}${tbody}</table>`;
   });
 
   html = html.replace(/^> (.+)$/gm, '<blockquote><p>$1</p></blockquote>');
