@@ -8,8 +8,7 @@ tags: ["AWS", "CI/CD", "Canary Deployment", "SRE", "Observability", "GitOps", "R
 ## Context
 
 I'm a software engineer transitioning from working on production systems 
-into DevOps and Cloud infrastructure. Rather than following tutorials, 
-I've been building production-pattern systems from scratch and
+into DevOps and Cloud infrastructure. I've been building production-pattern systems from scratch and
 deliberately breaking them to understand failure behavior.
 
 This project is a CI/CD pipeline with canary deployments, ALB-based 

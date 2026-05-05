@@ -2,279 +2,82 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Veera Reddy Ravuri — Resume</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&display=swap"
-        rel="stylesheet" />
-    <link rel="stylesheet" href="css/resume.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Resume — Veera Reddy Ravuri, Cloud & DevOps Engineer">
+  <meta name="author" content="Veera Reddy Ravuri">
+  <meta property="og:title" content="Resume — Veera Reddy Ravuri">
+  <meta property="og:description" content="Cloud & DevOps Engineer. 2+ years production systems experience.">
+  <meta property="og:url" content="https://veerareddyravuri.github.io/resume.html">
+  <title>Resume — Veera Reddy Ravuri</title>
 
-    <!-- Analytics: replace 'veerareddy' with your GoatCounter account code -->
-    <script data-goatcounter="https://veerareddy.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=JetBrains+Mono:wght@400;500&display=swap&subset=latin">
+
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/resume.css">
+  <link rel="stylesheet" href="css/animations.css">
+
+  <!-- Analytics: replace 'veerareddy' with your GoatCounter account code -->
+  <script data-goatcounter="https://veerareddy.goatcounter.com/count"
+          async src="https://gc.zgo.at/count.js"></script>
 </head>
 
 <body>
 
-    <div class="topbar">
-        <div class="topbar-left">
-            <a href="index.html">← portfolio</a>&nbsp;/&nbsp;resume
-        </div>
-        <div class="topbar-right">
+  <!-- ── NAV ───────────────────────────────────────────────── -->
+  <nav>
+    <a href="index.html" class="nav-logo">
+      <span class="logo-gears">
+        <span class="logo-gear">⚙</span>
+        <span class="logo-gear logo-gear-2">⚙</span>
+      </span>
+      &lt;veera /&gt;
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html#about">about</a></li>
+      <li><a href="index.html#skills">skills</a></li>
+      <li><a href="index.html#projects">projects</a></li>
+      <li><a href="index.html#incidents">war stories</a></li>
+      <li><a href="blog.html">blog</a></li>
+      <li><a href="index.html#contact">contact</a></li>
+      <li>
+        <a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf"
+           download="Veera_Reddy_Ravuri_Resume.pdf"
+           class="nav-resume-btn">↓ Download PDF</a>
+      </li>
+    </ul>
+  </nav>
 
-            <a class="btn-download" href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf"
-                download="Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf">↓ download pdf</a>
-            <button class="btn-print" onclick="window.print()">🖨 print</button>
-        </div>
+  <!-- ── RESUME CONTENT ────────────────────────────────────── -->
+  <main class="resume-main">
+    <div class="container">
+      <div id="resume-root">
+        <div class="resume-loading">Loading resume...</div>
+      </div>
     </div>
+  </main>
 
-    <div class="page">
-
-        <div class="header">
-            <div>
-                <div class="name">Veera Reddy<br>Ravuri</div>
-                <div class="name-sub">Cloud &amp; DevOps Engineer</div>
-            </div>
-            <div class="contact-block">
-                <span>+91 9908201599</span>
-                <a href="mailto:veerareddy.ravuri01@gmail.com">veerareddy.ravuri01@gmail.com</a>
-                <a href="https://linkedin.com/in/veerareddyravuri" target="_blank">linkedin.com/in/veerareddyravuri</a>
-                <a href="https://github.com/VeeraReddyRavuri" target="_blank">github.com/VeeraReddyRavuri</a>
-                <a href="https://VeeraReddyRavuri.github.io" target="_blank">VeeraReddyRavuri.github.io</a>
-                <span class="contact-block-location">India · On-site / Hybrid / Remote</span>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Summary</div>
-            <p class="resume-summary">
-                Software Engineer bringing over two years of enterprise experience supporting production systems and
-                automation for the Verizon billing platform. I combine this large scale operational background with
-                hands on experience in building cloud native infrastructure using AWS, Terraform, Ansible, Docker, and
-                GitHub Actions. Supported by my strong focus on root cause analysis, I am actively transitioning into
-                Cloud / DevOps / SRE roles.
-            </p>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Key Impacts</div>
-            <div class="impact-grid">
-                <div class="impact-pill">
-                    <div class="metric">~$200K</div>
-                    <div class="label">Revenue loss prevented — billing defect caught affecting 24,700+ customers via
-                        SQL debugging &amp; log analysis</div>
-                </div>
-                <div class="impact-pill">
-                    <div class="metric">85% faster</div>
-                    <div class="label">Regression cycle reduced — 3 days → 4 hours via Python-Selenium framework across
-                        10+ enterprise releases</div>
-                </div>
-                <div class="impact-pill">
-                    <div class="metric">30% MTTR ↓</div>
-                    <div class="label">Mean time to resolution reduced across 100+ production incidents through
-                        structured log tracing &amp; SQL debugging</div>
-                </div>
-                <div class="impact-pill">
-                    <div class="metric">~90% less</div>
-                    <div class="label">Manual setup effort — production AWS VPC provisioned with Terraform + Ansible,
-                        100% idempotent runs</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Experience</div>
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title">Software Engineer — Production Systems &amp; Automation</div>
-                    <div class="job-date">Jan 2024 – Present</div>
-                </div>
-                <div class="job-company">HCLTech · Chennai, TN</div>
-                <div class="job-client">Client: Verizon · Rating / Billing / Finance Platform</div>
-                <ul class="bullets">
-                    <li>Identified billing calculation defect during enterprise deployment cycles affecting 24,700+
-                        customers — prevented ~$200K revenue loss via structured SQL debugging and log-level root cause
-                        analysis.</li>
-                    <li>Built Python-Selenium regression automation framework reducing execution cycles by ~85% (3 days
-                        → 4 hours) across 10+ enterprise releases.</li>
-                    <li>Investigated and resolved 100+ production-impacting incidents using log tracing and SQL
-                        debugging, maintaining SLA compliance and reducing MTTR by 30%.</li>
-                    <li>Engineered Python OCR tool to auto-convert video KT sessions into structured documentation —
-                        eliminated manual transcription effort across a 70+ engineer team.</li>
-                    <li>Served as onboarding POC for new engineers, standardizing access provisioning and knowledge
-                        transfer workflows.</li>
-                </ul>
-            </div>
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title">Technical Mentor — Cloud &amp; Python (Freelance)</div>
-                    <div class="job-date">Aug 2022 – Dec 2023</div>
-                </div>
-                <div class="job-company">Remote</div>
-                <ul class="bullets">
-                    <li>Mentored 5+ engineers and international clients in Python, Linux, Git, and cloud fundamentals —
-                        guiding them to 75%+ assessment scores and successful capstone deployments.</li>
-                </ul>
-            </div>
-            <div class="job">
-                <div class="job-header">
-                    <div class="job-title">Cloud Infrastructure Intern</div>
-                    <div class="job-date">Sep 2022 – Nov 2022</div>
-                </div>
-                <div class="job-company">SkillVertex · Bangalore, KA</div>
-                <ul class="bullets">
-                    <li>Built serverless log monitoring pipeline using AWS Lambda + CloudWatch to automate log
-                        validation and anomaly alerting — improving detection speed by 45%.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Projects</div>
-            <div class="project">
-                <div class="project-header">
-                    <div class="project-name">AWS Production Infra Blueprint</div>
-                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/aws-production-infra-blueprint"
-                        target="_blank">github ↗</a>
-                </div>
-                <div class="project-stack">Terraform · Ansible · AWS (EC2, VPC, IAM, S3, DynamoDB, CloudWatch) · Docker
-                    · GitHub Actions</div>
-                <ul class="bullets">
-                    <li>Production-grade AWS VPC with private networking, bastion access, IAM least-privilege —
-                        provisioned entirely via Terraform + Ansible (100% idempotent, ~90% manual effort reduction).
-                    </li>
-                    <li>GitHub Actions CI/CD: SSHs into EC2 and deploys on every push to main. Documented RCA for 5
-                        simulated production failures.</li>
-                </ul>
-            </div>
-            <div class="project">
-                <div class="project-header">
-                    <div class="project-name">Automated Incident Alert Pipeline</div>
-                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/lambda-log-parser"
-                        target="_blank">github ↗</a>
-                </div>
-                <div class="project-stack">Python · AWS Lambda · S3 · CloudWatch · SNS · GitHub Actions</div>
-                <ul class="bullets">
-                    <li>Event-driven pipeline: S3 uploads trigger Lambda to parse logs and publish high-severity alerts
-                        via SNS; CloudWatch alarms monitor Lambda errors end-to-end.</li>
-                    <li>Zero manual deployment — GitHub Actions auto-deploys Lambda on every push. Real SNS delivery and
-                        CloudWatch triggers validated.</li>
-                </ul>
-            </div>
-            <div class="project">
-                <div class="project-header">
-                    <div class="project-name">Containerized Microservice Stack</div>
-                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/bug-tracker-containerized-stack"
-                        target="_blank">github ↗</a>
-                </div>
-                <div class="project-stack">Docker · Docker Compose · FastAPI · PostgreSQL · Nginx</div>
-                <ul class="bullets">
-                    <li>FastAPI + PostgreSQL + Nginx via Docker Compose; DNS-based discovery, Nginx load balancing.
-                        Image size reduced 46% (225MB → 120MB) via multi-stage Alpine builds.</li>
-                    <li>Simulated 5 failure scenarios with documented RCA reports.</li>
-                </ul>
-            </div>
-            <div class="project">
-                <div class="project-header">
-                    <div class="project-name">Linux Reliability Toolkit</div>
-                    <a class="project-link" href="https://github.com/VeeraReddyRavuri/linux-reliability-toolkit"
-                        target="_blank">github ↗</a>
-                </div>
-                <div class="project-stack">Python · psutil · systemd · journalctl · YAML · cron · Git</div>
-                <ul class="bullets">
-                    <li>Cron-driven monitoring agent (CPU, memory, disk) — ≤5-minute detection, 100% detection across 4
-                        simulated failure scenarios with automated service recovery via systemctl.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Skills</div>
-            <div class="skills-grid">
-                <div>
-                    <div class="skill-category">Cloud</div>
-                    <div class="skill-tags">
-                        <span class="tag">AWS EC2</span><span class="tag">VPC</span><span class="tag">IAM</span>
-                        <span class="tag">Lambda</span><span class="tag">S3</span><span class="tag">CloudWatch</span>
-                        <span class="tag">SNS</span><span class="tag">DynamoDB</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="skill-category">IaC &amp; Automation</div>
-                    <div class="skill-tags">
-                        <span class="tag">Terraform</span><span class="tag">Ansible</span><span class="tag">GitHub
-                            Actions</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="skill-category">Containers</div>
-                    <div class="skill-tags">
-                        <span class="tag">Docker</span><span class="tag">Docker Compose</span><span
-                            class="tag">Nginx</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="skill-category">Languages</div>
-                    <div class="skill-tags">
-                        <span class="tag">Python</span><span class="tag">Bash</span><span class="tag">SQL</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="skill-category">Databases</div>
-                    <div class="skill-tags">
-                        <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span
-                            class="tag">DynamoDB</span><span class="tag">DB2</span>
-                    </div>
-                </div>
-                <div>
-                    <div class="skill-category">Systems</div>
-                    <div class="skill-tags">
-                        <span class="tag">Linux</span><span class="tag">systemd</span><span class="tag">TCP/IP</span>
-                        <span class="tag">DNS</span><span class="tag">Git</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Education</div>
-            <div class="edu-row">
-                <div>
-                    <div class="edu-school">Narasaraopeta Engineering College</div>
-                    <div class="edu-degree">B.Tech — Computer Science &amp; Engineering · CGPA 8.54</div>
-                    <div class="edu-note">Best Paper Award — International Conference on AI &amp; IT (Mar 2023) · Neural
-                        network research on traffic sign recognition</div>
-                </div>
-                <div class="edu-date">May 2023</div>
-            </div>
-        </div>
-
-        <div class="section">
-            <div class="section-title">Certifications</div>
-            <div class="cert-row">
-                <div class="cert-name">GitHub Copilot</div>
-                <div class="cert-issuer">Microsoft · Mar 2026</div>
-            </div>
-            <div class="cert-row cert-row--pending">
-                <div class="cert-name">AWS Solutions Architect Associate (SAA-C03)</div>
-                <div class="cert-issuer">In progress</div>
-            </div>
-        </div>
-
+  <!-- ── FOOTER ────────────────────────────────────────────── -->
+  <footer>
+    <div class="footer-left">
+      © 2026 Veera Reddy Ravuri. All rights reserved.
+      &nbsp;·&nbsp;
+      <a href="https://github.com/VeeraReddyRavuri/VeeraReddyRavuri.github.io"
+         class="footer-arch-link" target="_blank" rel="noopener">View Portfolio Source ↗</a>
     </div>
+    <a href="assets/Veera_Reddy_Ravuri_Cloud_DevOps_Resume.pdf"
+       download="Veera_Reddy_Ravuri_Resume.pdf"
+       class="btn btn-outline btn--sm">↓ Download PDF</a>
+  </footer>
 
-
-
-    <footer
-        style="max-width:900px;margin:0 auto;padding:24px 48px;border-top:1px solid var(--muted);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
-        <span style="font-size:11px;color:var(--dim);">© 2026 Veera Reddy Ravuri</span>
-        <div style="display:flex;gap:20px;align-items:center;">
-            <a href="index.html" style="font-size:11px;color:var(--blue);text-decoration:none;">← Portfolio</a>
-            <a href="https://github.com/VeeraReddyRavuri/VeeraReddyRavuri.github.io"
-                style="font-size:11px;color:var(--blue);text-decoration:none;" target="_blank" rel="noopener">Source
-                ↗</a>
-        </div>
-    </footer>
+  <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

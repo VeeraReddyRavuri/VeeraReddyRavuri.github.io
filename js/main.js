@@ -4,19 +4,25 @@ import { initModals } from './modals.js';
 import { initAnimations } from './animations.js';
 import { initNav } from './nav.js';
 import { initContact } from './contact.js';
+import { initResume } from './resume.js';
 
 async function boot() {
   initNav();
-  initModals();
-  initContact();
 
-  if (window.location.pathname.includes('blog')) {
+  const path = window.location.pathname;
+
+  if (path.includes('resume')) {
+    await initResume();
+  } else if (path.includes('blog')) {
+    initModals();
     await initBlogPage();
+    initAnimations();
   } else {
+    initModals();
+    initContact();
     await Promise.all([initProjects(), initBlogPreviews()]);
+    initAnimations();
   }
-
-  initAnimations();
 }
 
 boot();
